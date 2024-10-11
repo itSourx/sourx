@@ -1,0 +1,66 @@
+USER DE TEST 
+
+{
+    nom: test,
+    prenom: test,
+    telephone: 8456963354,
+    email: testeur@gmail.com,
+    password: 123456
+}
+
+MANAGER = testeur@fmail.com
+MANAGER MDP = 123456
+
+RH  :  admin@gmail.com 
+RH MDP : StrongP@55! 
+
+ADMIN = admin@admin.com
+ADMIN MDP = admin
+
+SALARIÉ: warren@warren.com
+SALARIÉ MDP: warren
+
+TACHES A FAIRE
+
+- Ajouter l'espace disponible et l'espace utilisé (statistics)
+- Filtrer en fonction de celui qui a envoyé le document , sur le http://localhost:5173/home/documents dans la partie   Récemment ajoutés 
+- Quand on fait Ajouter un document sur le dashboard et sur le http://localhost:5173/home/documents , on veut pouvoir spécifier le dossier dans lequel on envoi cela.
+Donc ajouter un input type select qui va lister la lisste des dossiers (La liste des noms des dossiers est normalement dans le localstorage)
+Modifier la requete pour que ca prenne en compte le nom du dossier .... et du coup , on modifie aussi la requete coté didier
+
+- Voir la colonne Actions de la section  Récemment ajoutés  et le refaire la même chose au niveau de dashboard , sachant que pour le moment ;
+on a une colonne Télécharger au lieu de Actions 
+
+
+Didier, tu vas ecrire une fonction qui permet de changer de dossier pour un document.. prends bien en compte ce qu'on te passse depuis le frontend
+Il faudrait aussi ecrire une fonction pour supprimer un document (prends bien en compte ce qu'on te passse depuis le frontend)
+
+
+Faire des demandes déja écrites
+
+Mettre les routes dans le middleware
+
+
+DOSSIER 
+
+- Remplacer lle nom de la colonne Télécharger quand on liste les documents Par "Actions" et ajouter une icone pour supprimer le fichier avec confirmation bien sur ... et aussi une icone pour lui changer de dossier (par exemple jusque là , par défaut, on mettait dans le dossier Personnel ... moi je veux pouvoir le transferer dans un autre dossier ... On fait juste le frontend  ... Un peu plus tard, on va s'occuper le backend ... donc focus sur le frontend actuellement)
+
+
+
+
+
+
+
+
+
+Quand on clique pour selectionner un doc FAIRE DEMANDE MANAGER - Ca marche pas , mais le drag and drop marche
+Envoyer un mail quand il valide une demande 
+
+
+
+
+
+
+
+
+- admin ne doit pas avoir besoin de team ... ne doit pas avoir de team ..... 

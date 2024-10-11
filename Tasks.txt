@@ -1,0 +1,27 @@
+-  Validateur  
+
+On regarde l'équipe de l'utilisateur courant ... On va chercher tous ceux qui ont un role de manager dans son equipe puis on rend cela comme reponse
+
+N'hesitez pas à regarder la variable employees: [], dans le store.js qui contient nen fait tous les users .... ce qui fait que tu peux directement appeler le store et filtrer pour afficher , au lieu de faire encore un appel backend .... (Meilleur choix)
+
+
+
+- On  arrive pas à fermer la modale de nouvelle demande sur le dashboard
+
+- QUand on supprime un document depuis le dashbaord, ça marche , mais quand on est dans un dossier .... ça ne marche pas ... donc voir comme on envoi la requete de suppression depuis le dashboard .... C'est probable que la fonction qui delete soit dans le store ... 
+
+
+- Tester les focntionnalités de l'appli en general 
+
+- Quand on veut envoyer un document chez testeur, il faut mettre Moi même par defaut dasn le select 
+
+
+-  Ronald, tooltip user et deconnxion
+
+- Quand on va fermer la boite modale , bien la réinitialiser, parce que ça conserve tous les elements en fait .. 
+
+
+- Retrouver un user salairé ... 
+
+
+

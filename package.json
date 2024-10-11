@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@primevue/themes": "^4.0.0-rc.2",
+    "primevue": "^4.0.0-rc.2"
+  }
+}

@@ -30,7 +30,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useUserStore } from '@/stores/UserStore'
+import { useUserStore } from '@/stores/UserStore/UserStore'
 import {
   FileText,
   FilePlus,

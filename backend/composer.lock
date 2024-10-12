@@ -21,7 +21,9 @@
                 "shasum": ""
             },
             "require": {
-                "php": "^8.1"
+                "php": "^8.1",
+                "ext-sodium": "*"
+
             },
             "require-dev": {
                 "php-coveralls/php-coveralls": "^2.2",

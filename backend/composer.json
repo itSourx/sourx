@@ -73,11 +73,7 @@
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
         },
-        "platform": {
-        "php": "7.4.3",
-        "ext-gd": "7.4.3",
-        "ext-sodium": "7.4.3"
-    }
+        "platform": {}
     },
     "minimum-stability": "stable",
     "prefer-stable": true

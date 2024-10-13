@@ -8,7 +8,7 @@ use Serializable;
 use Tapp\Airtable\Facades\AirtableFacade as Airtable;
 use Tapp\Airtable\Facades\AirtableFacade;
 
-class AirtableModel
+class AirTableModel
 {
     use AirtableTrait ;
      // Remplacer par le nom de votre table Airtable

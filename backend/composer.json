@@ -76,7 +76,7 @@
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
         },
-        "platform": {}
+        "platform": { "php": "8.3.12"}
     },
     "minimum-stability": "stable",
     "prefer-stable": true

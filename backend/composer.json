@@ -31,6 +31,9 @@
         "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
+        "classmap": [
+        "vendor/league/flysystem-local"
+         ],
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",

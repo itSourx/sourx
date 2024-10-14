@@ -373,7 +373,6 @@
                     </div>
 
                     <div v-if="activeTab === 'import'">
-                        <ExcelImport />
                     </div>
                 </div>
             </ModalVue>
@@ -397,7 +396,6 @@ import { useUserManagementStore } from '@/stores/AdminStore/UserManagementStore'
 import { usePosteStore } from '@/stores/UserStore/PosteStore';
 import ModalVue from '@/components/ModalVue.vue'
 import MultiSelectDropdown from '@/components/MultiSelectDropdown.vue'
-import ExcelImport from '@/components/ExcelImport.vue'
 import MotifsManagement from '@/components/MotifsManagement.vue';
 import PosteManagement from '@/components/PosteManagement.vue';
 

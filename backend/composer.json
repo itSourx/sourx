@@ -58,7 +58,12 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ]
+        ],
+        "post-install-cmd": [
+        "composer install --ignore-platform-req=ext-gd --ignore-platform-req=ext-sodium",
+        "php -r \"extension_loaded('gd') or dl('gd.so');\"",
+        "php -r \"extension_loaded('sodium') or dl('sodium.so');\""
+    ]
     },
     "extra": {
         "laravel": {

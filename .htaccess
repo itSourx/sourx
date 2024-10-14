@@ -3,5 +3,5 @@ php_value extension gd
 php_value extension sodium
 
 # Modifier d'autres paramètres PHP si nécessaire
-php_value memory_limit 256M
-php_value max_execution_time 120
+php_value memory_limit 2560M
+php_value max_execution_time 3600

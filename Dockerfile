@@ -1,20 +1,26 @@
-# Utiliser une image de base PHP avec FPM
+
+# Utilise une image de base PHP
 FROM php:8.1-fpm
 
-# Installer les dépendances nécessaires pour GD et Sodium
+# Installe les dépendances système nécessaires
 RUN apt-get update && apt-get install -y \
-    libgd-dev \
-    libsodium-dev \
-    && docker-php-ext-install gd sodium
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd
 
-# Installer d'autres extensions nécessaires si besoin
-RUN docker-php-ext-install pdo pdo_mysql
+# Définit le répertoire de travail
+WORKDIR /app
 
-# Copier le projet dans le répertoire de travail du container
-COPY . /var/www/html
+# Copie le fichier composer.json et composer.lock
+COPY composer.json composer.lock ./
 
-# Exposer le port 80 pour l'application
-EXPOSE 80
+# Installe les dépendances PHP
+RUN composer install
 
-# Commande pour démarrer PHP-FPM
+# Copie le reste de l'application
+COPY . .
+
+# Commande par défaut pour démarrer l'application
 CMD ["php-fpm"]

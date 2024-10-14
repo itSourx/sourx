@@ -5,7 +5,7 @@ namespace App\Models\AirTable;
 use Tapp\Airtable\Facades\AirtableFacade;
 
 
-class AirTableModel
+class AirtableModel
 {
     protected $record;
     protected $fields = "fields";

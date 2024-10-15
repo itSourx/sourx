@@ -32,10 +32,10 @@ export const useAdminStore = defineStore('adminStore', {
 
         const [userResponse, documentResponse, requestResponse, storageResponse] =
           await Promise.all([
-            axios.get('http://localhost:8000/api/v1/getUsersStats', { headers }),
-            axios.get('http://localhost:8000/api/v1/getDocumentsStats', { headers }),
-            axios.get('http://localhost:8000/api/v1/getRequestsStats', { headers }),
-            axios.get('http://localhost:8000/api/v1/getStorageStats', { headers })
+            axios.get('https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/getUsersStats', { headers }),
+            axios.get('https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/getDocumentsStats', { headers }),
+            axios.get('https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/getRequestsStats', { headers }),
+            axios.get('https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/getStorageStats', { headers })
           ])
 
         // User Statistics
@@ -65,7 +65,7 @@ export const useAdminStore = defineStore('adminStore', {
     },
     async deleteDocument(documentId) {
       try {
-        await axios.delete(`http://localhost:8000/api/v1/deleteDocument/${documentId}`, {
+        await axios.delete(`https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/deleteDocument/${documentId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('jwt_token')}`
           }

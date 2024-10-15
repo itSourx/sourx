@@ -12,7 +12,7 @@ export const usePosteStore = defineStore('posteStore', {
       this.showLoader = true
       try {
         const token = localStorage.getItem('jwt_token')
-        const response = await axios.get('http://localhost:8000/api/v1/postes', {
+        const response = await axios.get('https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/postes', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -29,7 +29,7 @@ export const usePosteStore = defineStore('posteStore', {
       this.showLoader = true
       try {
         const token = localStorage.getItem('jwt_token')
-        const response = await axios.post('http://localhost:8000/api/v1/postes', posteData, {
+        const response = await axios.post('https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/postes', posteData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -47,7 +47,7 @@ export const usePosteStore = defineStore('posteStore', {
       this.showLoader = true
       try {
         const token = localStorage.getItem('jwt_token')
-        await axios.patch(`http://localhost:8000/api/v1/postes/${id}`, posteData, {
+        await axios.patch(`https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/postes/${id}`, posteData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -69,7 +69,7 @@ export const usePosteStore = defineStore('posteStore', {
       try {
         const token = localStorage.getItem('jwt_token')
         await axios.patch(
-          `http://localhost:8000/api/v1/postes/${id}/archive`,
+          `https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/postes/${id}/archive`,
           {},
           {
             headers: {
@@ -93,7 +93,7 @@ export const usePosteStore = defineStore('posteStore', {
       try {
         const token = localStorage.getItem('jwt_token')
         const response = await axios.patch(
-          `http://localhost:8000/api/v1/postes/${id}/unarchive`,
+          `https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/postes/${id}/unarchive`,
           {},
           {
             headers: {

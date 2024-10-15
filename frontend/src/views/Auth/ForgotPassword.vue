@@ -94,7 +94,7 @@ const handleFormSubmit = async () => {
 const handleEmailSubmit = async () => {
   isLoading.value = true
   try {
-    const response = await axios.post('http://localhost:8000/api/v1/password/reset', {
+    const response = await axios.post('https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/password/reset', {
       email: email.value
     })
 
@@ -112,7 +112,7 @@ const handleEmailSubmit = async () => {
 const handleCodeSubmit = async () => {
   isLoading.value = true
   try {
-    const response = await axios.post('http://localhost:8000/api/v1/password/verify', {
+    const response = await axios.post('https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/password/verify', {
       email: email.value,
       code: code.value
     })
@@ -136,7 +136,7 @@ const handlePasswordReset = async () => {
 
   isLoading.value = true
   try {
-    const response = await axios.post('http://localhost:8000/api/v1/password/confirm', {
+    const response = await axios.post('https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/password/confirm', {
       email: email.value,
       newPassword: newPassword.value
     })

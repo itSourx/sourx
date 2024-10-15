@@ -17,7 +17,7 @@ export const useLoginStore = defineStore('loginStore', {
       const userStore = useUserStore()
 
       try {
-        const response = await axios.post('http://localhost:8000/api/v1/auth/login', {
+        const response = await axios.post('https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/auth/login', {
           email: data.email,
           mdp: data.password
         })
@@ -53,7 +53,7 @@ export const useLoginStore = defineStore('loginStore', {
       try {
         const token = localStorage.getItem('jwt_token')
         const response = await axios.post(
-          'http://localhost:8000/api/v1/password/first-login-change',
+          'https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/password/first-login-change',
           {
             newPassword: newPassword
           },

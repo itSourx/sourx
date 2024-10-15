@@ -56,7 +56,7 @@ const uploadUsers = async () => {
 
     try {
         const token = localStorage.getItem('jwt_token')
-        const response = await axios.post('http://localhost:8000/api/v1/bulkCreateUsers', { users: users.value }, {
+        const response = await axios.post('https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/bulkCreateUsers', { users: users.value }, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

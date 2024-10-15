@@ -12,7 +12,7 @@ export const useDocumentStore = defineStore('documentStore', {
   actions: {
     async fetchDocuments(token) {
       try {
-        const response = await axios.post('http://localhost:8000/api/v1/getDocumentByUser', {}, {
+        const response = await axios.post('https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/getDocumentByUser', {}, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -85,7 +85,7 @@ export const useDocumentStore = defineStore('documentStore', {
 
       try {
         const response = await axios.post(
-          'http://localhost:8000/api/v1/sendDocumentByUser',
+          'https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/sendDocumentByUser',
           formData,
           {
             headers: {
@@ -128,7 +128,7 @@ export const useDocumentStore = defineStore('documentStore', {
     async deleteDocument(documentId) {
       try {
         const response = await axios.post(
-          'http://localhost:8000/api/v1/document/delete',
+          'https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/document/delete',
           { id: documentId },
           {
             headers: {
@@ -152,7 +152,7 @@ export const useDocumentStore = defineStore('documentStore', {
     async moveDocument(documentId, folderDestinationName) {
       try {
         const response = await axios.post(
-          `http://localhost:8000/api/v1/document/move/${documentId}/${folderDestinationName}`,
+          `https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/document/move/${documentId}/${folderDestinationName}`,
           {},
           {
             headers: {

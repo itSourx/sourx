@@ -19,7 +19,7 @@ export const useDemandStore = defineStore('demandsStore', {
       try {
         const token = localStorage.getItem('jwt_token')
         const response = await axios.post(
-          'http://localhost:8000/api/v1/getDemandsByUser',
+          'https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/getDemandsByUser',
           {},
           {
             headers: {
@@ -79,7 +79,7 @@ export const useDemandStore = defineStore('demandsStore', {
     },
     async fetchMotifs() {
       try {
-        const response = await axios.get('http://localhost:8000/api/v1/motifs')
+        const response = await axios.get('https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/motifs')
         this.motifs = response.data
       } catch (error) {
         console.error('Erreur lors de la récupération des motifs :', error)
@@ -89,7 +89,7 @@ export const useDemandStore = defineStore('demandsStore', {
     async createMotif(title) {
       this.showLoader = true
       try {
-        const response = await axios.post('http://localhost:8000/api/v1/motifs', { title })
+        const response = await axios.post('https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/motifs', { title })
         this.motifs.push(response.data.data)
         toast.success('Motif créé avec succès')
       } catch (error) {
@@ -102,7 +102,7 @@ export const useDemandStore = defineStore('demandsStore', {
     async updateMotif(id, title) {
       this.showLoader = true
       try {
-        await axios.patch(`http://localhost:8000/api/v1/motifs/${id}`, { title })
+        await axios.patch(`https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/motifs/${id}`, { title })
         const index = this.motifs.findIndex((motif) => motif.id === id)
         if (index !== -1) {
           this.motifs[index].title = title
@@ -118,7 +118,7 @@ export const useDemandStore = defineStore('demandsStore', {
     async archiveMotif(id) {
       this.showLoader = true
       try {
-        await axios.patch(`http://localhost:8000/api/v1/motifs/${id}/archive`)
+        await axios.patch(`https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/motifs/${id}/archive`)
         this.motifs = this.motifs.filter((motif) => motif.id !== id)
         toast.success('Motif archivé avec succès')
       } catch (error) {
@@ -131,7 +131,7 @@ export const useDemandStore = defineStore('demandsStore', {
     async unarchiveMotif(id) {
       this.showLoader = true;
       try {
-        const response = await axios.patch(`http://localhost:8000/api/v1/motifs/${id}/unarchive`);
+        const response = await axios.patch(`https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/motifs/${id}/unarchive`);
         this.motifs = this.motifs.map(motif => {
           if (motif.id === id) {
             return { ...motif, isArchived: 0 };
@@ -152,7 +152,7 @@ export const useDemandStore = defineStore('demandsStore', {
       try {
         const token = localStorage.getItem('jwt_token')
         const response = await axios.post(
-          'http://localhost:8000/api/v1/getDemandsToValidate',
+          'https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/getDemandsToValidate',
           { role },
           {
             headers: {
@@ -221,7 +221,7 @@ export const useDemandStore = defineStore('demandsStore', {
         }
 
         const response = await axios.post(
-          'http://localhost:8000/api/v1/createDemand',
+          'https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/createDemand',
           formDataToSend,
           {
             headers: {
@@ -250,7 +250,7 @@ export const useDemandStore = defineStore('demandsStore', {
       const token = localStorage.getItem('jwt_token')
       try {
         const response = await axios.patch(
-          `http://localhost:8000/api/v1/requests/${requestId}/takeCharge`,
+          `https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/requests/${requestId}/takeCharge`,
           { status: 'En cours' },
           {
             headers: {
@@ -279,7 +279,7 @@ export const useDemandStore = defineStore('demandsStore', {
           }
         }
         const response = await axios.post(
-          `http://localhost:8000/api/v1/requests/${requestId}/approve`,
+          `https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/requests/${requestId}/approve`,
           formData,
           {
             headers: {
@@ -298,7 +298,7 @@ export const useDemandStore = defineStore('demandsStore', {
       const token = localStorage.getItem('jwt_token')
       try {
         const response = await axios.post(
-          `http://localhost:8000/api/v1/requests/${requestId}/reject`,
+          `https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/requests/${requestId}/reject`,
           { message },
           {
             headers: {
@@ -316,7 +316,7 @@ export const useDemandStore = defineStore('demandsStore', {
       const token = localStorage.getItem('jwt_token')
       try {
         const response = await axios.patch(
-          `http://localhost:8000/api/v1/requests/${updatedRequest.id}/update`,
+          `https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/requests/${updatedRequest.id}/update`,
           updatedRequest,
           {
             headers: {

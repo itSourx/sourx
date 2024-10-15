@@ -3,6 +3,7 @@
 /public/build
 /public/hot
 /vendor
+/storage
 /.env
 .env.backup
 .env.production

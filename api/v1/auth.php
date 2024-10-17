@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
 
-class AuthController extends Controller
+class Auth extends Controller
 {
     public function login(Request $request)
     {

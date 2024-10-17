@@ -114,3 +114,4 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post("/document/delete", [DocumentController::class, "deleteDocument"])->name("deleteDocument");
     });
 });
+

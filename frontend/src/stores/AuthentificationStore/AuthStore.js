@@ -17,10 +17,13 @@ export const useLoginStore = defineStore('loginStore', {
       const userStore = useUserStore()
 
       try {
+        console.log('Tentative de connexion avec:', { email: data.email })
         const response = await axios.post('https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/auth/login', {
           email: data.email,
           mdp: data.password
         })
+
+        console.log('Réponse du serveur:', response)
 
         if (response.status === 200 && response.data) {
           toast.success(response.data.message)
@@ -47,7 +50,8 @@ export const useLoginStore = defineStore('loginStore', {
           throw new Error('Réponse du serveur invalide')
         }
       } catch (error) {
-        console.error('Erreur lors de la connexion:', error)
+        console.error('Erreur détaillée:', error)
+        console.error('Réponse du serveur en cas d'erreur:', error.response)
         if (error.response && error.response.data && error.response.data.message) {
           toast.error(error.response.data.message)
         } else {

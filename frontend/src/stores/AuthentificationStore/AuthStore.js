@@ -22,27 +22,37 @@ export const useLoginStore = defineStore('loginStore', {
           mdp: data.password
         })
 
-        if (response.status === 200) {
+        if (response.status === 200 && response.data) {
           toast.success(response.data.message)
 
           const userData = response.data.user
-          userStore.setUser(userData)
-          localStorage.setItem('jwt_token', response.data.token)
-          localStorage.setItem('expires_at', new Date().getTime() + response.data.expires_in * 1000)
+          if (userData) {
+            userStore.setUser(userData)
+            localStorage.setItem('jwt_token', response.data.token)
+            localStorage.setItem('expires_at', new Date().getTime() + response.data.expires_in * 1000)
 
-          console.log(userData)
+            console.log(userData)
 
-          if (userData.FirstLogin) {
-            router.push('/first-login-change-password')
-          } else if (userData.role === 'Administrateur') {
-            router.push('/management')
+            if (userData.FirstLogin) {
+              router.push('/first-login-change-password')
+            } else if (userData.role === 'Administrateur') {
+              router.push('/management')
+            } else {
+              router.push('/home')
+            }
           } else {
-            router.push('/home')
+            throw new Error('Données utilisateur manquantes dans la réponse')
           }
+        } else {
+          throw new Error('Réponse du serveur invalide')
         }
       } catch (error) {
-        toast.error(error.response.data.message)
-        console.error(error)
+        console.error('Erreur lors de la connexion:', error)
+        if (error.response && error.response.data && error.response.data.message) {
+          toast.error(error.response.data.message)
+        } else {
+          toast.error('Une erreur est survenue lors de la connexion')
+        }
       } finally {
         this.isLoading = false
       }
@@ -52,11 +62,13 @@ export const useLoginStore = defineStore('loginStore', {
 
       try {
         const token = localStorage.getItem('jwt_token')
+        if (!token) {
+          throw new Error('Token d\'authentification manquant')
+        }
+
         const response = await axios.post(
           'https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/password/first-login-change',
-          {
-            newPassword: newPassword
-          },
+          { newPassword },
           {
             headers: {
               Authorization: `Bearer ${token}`
@@ -69,15 +81,17 @@ export const useLoginStore = defineStore('loginStore', {
 
           const userStore = useUserStore()
           const userData = userStore.user
-          if (userData.role === 'Administrateur') {
+          if (userData && userData.role === 'Administrateur') {
             router.push('/management')
           } else {
             router.push('/home')
           }
+        } else {
+          throw new Error('Réponse du serveur invalide')
         }
       } catch (error) {
-        console.error(error)
-        toast.error('Échec de la modification du mot de passe')
+        console.error('Erreur lors du changement de mot de passe:', error)
+        toast.error(error.message || 'Échec de la modification du mot de passe')
       } finally {
         this.isLoading = false
       }
@@ -85,8 +99,8 @@ export const useLoginStore = defineStore('loginStore', {
     logout(router) {
       const userStore = useUserStore()
 
-      // Réinitialiser les informations d'authentification et rediriger l'utilisateur
       localStorage.removeItem('jwt_token')
+      localStorage.removeItem('expires_at')
       userStore.clearUser()
       router.push('/').then(() => {
         window.location.reload()

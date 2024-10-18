@@ -8,7 +8,7 @@
         <div
           class="w-40 h-40 border border-gray-light rounded-full mr-6 flex items-center justify-center overflow-hidden bg-gray-100">
           <img :src="profilePicture" alt="Photo de profil" class="w-full h-full object-cover"
-            v-if="profilePicture !== '/path/to/default/profile/picture.png'" />
+            v-if="profilePicture !== ''" />
           <span v-else class="text-gray-light">Photo de profil</span>
         </div>
         <div class="flex items-center">
@@ -126,12 +126,13 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useUserStore } from '@/stores/UserStore/UserStore'
+import defaultProfilePicture from '@/assets/user-icon.svg'
 import router from '@/router'
 
 const userStore = useUserStore()
 const user = userStore.getUser()
 
-const profilePicture = ref(user?.photo || '/path/to/default/profile/picture.png')
+const profilePicture = ref(user?.photo || defaultProfilePicture)
 const firstName = ref(user?.prenom || '')
 const lastName = ref(user?.nom || '')
 const email = ref(user?.email || '')
@@ -189,7 +190,7 @@ const uploadProfilePicture = (event) => {
 }
 
 const deleteProfilePicture = () => {
-  profilePicture.value = '/path/to/default/profile/picture.png'
+  profilePicture.value = defaultProfilePicture
 }
 
 const saveSettings = async () => {

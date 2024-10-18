@@ -4,6 +4,12 @@
 
 <script setup>
 import { computed } from 'vue'
+import pdfIcon from '@/assets/DocumentIcons/pdf.png';
+import docIcon from '@/assets/DocumentIcons/doc.png';
+import xlsIcon from '@/assets/DocumentIcons/xls.png';
+import officeIcon from '@/assets/DocumentIcons/office.png';
+import txtIcon from '@/assets/DocumentIcons/txt.png';
+import defaultIcon from '@/assets/DocumentIcons/default.png';
 
 const props = defineProps({
   fileName: {
@@ -18,27 +24,27 @@ const props = defineProps({
 
 const useDocumentIcon = (fileName, isFolder) => {
   if (isFolder) {
-    return '/src/assets/DocumentIcons/folder_document_icon.svg' // Icône pour les dossiers
+    return '@/assets/DocumentIcons/folder_document_icon.svg'
   }
 
   const fileExtension = fileName.split('.').pop().toLowerCase()
 
   switch (fileExtension) {
     case 'pdf':
-      return '/src/assets/DocumentIcons/pdf.png'
+      return pdfIcon
     case 'doc':
     case 'docx':
-      return '/src/assets/DocumentIcons/doc.png'
+      return docIcon
     case 'xls':
     case 'xlsx':
-      return '/src/assets/DocumentIcons/xls.png'
+      return xlsIcon
     case 'ppt':
     case 'pptx':
-      return '/src/assets/DocumentIcons/office.png'
+      return officeIcon
     case 'txt':
-      return '/src/assets/DocumentIcons/txt.png'
+      return txtIcon
     default:
-      return '/src/assets/DocumentIcons/default.png'
+      return defaultIcon
   }
 }
 

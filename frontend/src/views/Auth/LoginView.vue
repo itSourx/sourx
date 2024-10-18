@@ -41,7 +41,7 @@
 
       <button type="submit"
         class="bg-oxford-blue text-white p-3 py-5 w-full rounded-md mt-5 text-xs hover:bg-zaffre hover:shadow-lg transform transition duration-200 ease-in-out">
-        Se connecter
+        SE connecter
       </button>
     
     </form>

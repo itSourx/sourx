@@ -51,7 +51,7 @@ export const useLoginStore = defineStore('loginStore', {
         }
       } catch (error) {
         console.error('Erreur détaillée:', error)
-        console.error('Réponse du serveur en cas d'erreur:', error.response)
+        console.error('Réponse du serveur en cas d\'erreur:', error.response)
         if (error.response && error.response.data && error.response.data.message) {
           toast.error(error.response.data.message)
         } else {

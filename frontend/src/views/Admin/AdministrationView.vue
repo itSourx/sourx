@@ -278,12 +278,6 @@
                         }" @click="activeTab = 'form'">
                             {{ isEditing ? 'Modifier Utilisateur' : 'Ajouter un Utilisateur' }}
                         </button>
-                        <!-- <button :class="{
-                            'py-2 px-4 text-sm font-medium border-b-2 border-oxford-blue': activeTab === 'import',
-                            'py-2 px-4 text-sm font-medium text-gray-600 border-b-2 border-transparent hover:border-gray-light': activeTab !== 'import'
-                        }" @click="activeTab = 'import'">
-                            Importer via Excel
-                        </button> -->
                     </div>
 
                     <div v-if="activeTab === 'form'">
@@ -373,7 +367,7 @@
                     </div>
 
                     <div v-if="activeTab === 'import'">
-                        <ExcelImport />
+
                     </div>
                 </div>
             </ModalVue>
@@ -397,7 +391,6 @@ import { useUserManagementStore } from '@/stores/AdminStore/UserManagementStore'
 import { usePosteStore } from '@/stores/UserStore/PosteStore';
 import ModalVue from '@/components/ModalVue.vue'
 import MultiSelectDropdown from '@/components/MultiSelectDropdown.vue'
-import ExcelImport from '@/components/ExcelImport.vue'
 import MotifsManagement from '@/components/MotifsManagement.vue';
 import PosteManagement from '@/components/PosteManagement.vue';
 

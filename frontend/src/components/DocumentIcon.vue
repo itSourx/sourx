@@ -10,6 +10,8 @@ import xlsIcon from '@/assets/DocumentIcons/xls.png';
 import officeIcon from '@/assets/DocumentIcons/office.png';
 import txtIcon from '@/assets/DocumentIcons/txt.png';
 import defaultIcon from '@/assets/DocumentIcons/default.png';
+import folderDocumentIcon from '@/assets/DocumentIcons/folder_document_icon.svg';
+
 
 const props = defineProps({
   fileName: {
@@ -24,7 +26,7 @@ const props = defineProps({
 
 const useDocumentIcon = (fileName, isFolder) => {
   if (isFolder) {
-    return '@/assets/DocumentIcons/folder_document_icon.svg'
+    return folderDocumentIcon
   }
 
   const fileExtension = fileName.split('.').pop().toLowerCase()

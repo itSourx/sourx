@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6">
+  <div>
     <h1 class="text-2xl font-bold mb-6">Gestion des Dossiers et Documents</h1>
 
     <!-- Barre de recherche et actions -->
@@ -133,9 +133,9 @@
     </table>
 
     <!-- Message si aucun résultat -->
-    <div v-if="paginatedFolders.length === 0 && paginatedFiles.length === 0" class="text-center text-gray-medium p-4">
+    <p v-if="paginatedFolders.length === 0 && paginatedFiles.length === 0" class="text-center text-gray-medium p-4">
       Aucun fichier ou dossier trouvé.
-    </div>
+    </p>
 
     <!-- Pagination -->
     <div class="mt-4 flex justify-end space-x-2">

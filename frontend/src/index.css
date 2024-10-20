@@ -37,14 +37,34 @@ h6 {
   font-style: normal;
 }
 
-a,
+a,  
 p,
 li,
 span,
-button {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
+button, input, td, tr, th, footer{
+  font-size: 0.8rem !important;
+  line-height: 1rem;
 }
+
+/* Tablettes (768px - 1024px) */
+@media (max-width: 1024px) {
+  a, p, li, span, 
+  button, input, td, tr, th {
+    font-size: 0.9rem !important;
+    line-height: 1.2rem;
+  }
+}
+
+/* Téléphones (moins de 768px) */
+@media (max-width: 767px) {
+  a, p, li, span, 
+  button, input, td, tr, th {
+    font-size: 0.8rem !important;
+    line-height: 1.4rem;
+  }
+}
+
+
 
 .pagination-container {
   display: flex;

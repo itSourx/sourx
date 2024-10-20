@@ -84,7 +84,7 @@
                             <DocumentIcon :fileName="folder.name" :isFolder="true" class="text-xl mr-4" />
                             <span @click="openFolder(folder)" class="cursor-pointer text-oxford-blue">{{
                                 folder.name
-                                }}</span>
+                            }}</span>
                         </td>
                         <td class="p-4 text-gray-medium">
                             {{
@@ -215,10 +215,10 @@
             </table>
 
             <!-- Message si aucun résultat -->
-            <div v-if="showOnlyFiles && paginatedFiles.length === 0 || (!showOnlyFiles && paginatedFolders.length === 0 && paginatedFiles.length === 0)"
+            <p v-if="showOnlyFiles && paginatedFiles.length === 0 || (!showOnlyFiles && paginatedFolders.length === 0 && paginatedFiles.length === 0)"
                 class="text-center text-gray-medium p-4">
                 Aucun fichier ou dossier trouvé.
-            </div>
+            </p>
 
             <!-- Pagination -->
             <div class="mt-4 flex justify-end space-x-2">

@@ -6,83 +6,89 @@ export const useAdminDocumentStore = defineStore('adminDocumentStore', {
   state: () => ({
     folders: [],
     files: [],
-    documentsLoaded: false
+    documentsLoaded: false,
+    storage: { documents: 0, media: 0, freeSpace: 1 },
   }),
   actions: {
     // Charger les dossiers et les fichiers
     async fetchFoldersAndFiles(token) {
-
       if (this.documentsLoaded) {
-        console.log('Documents déjà chargés, pas besoin de recharger.');
-        return;
+        console.log('Documents déjà chargés, pas besoin de recharger.')
+        return
       }
 
       try {
-        const response = await axios.post('https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/getDocumentByUser', {}, {
-          headers: {
-            Authorization: `Bearer ${token}`
+        const response = await axios.post(
+          'https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/getDocumentByUser',
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
           }
-        })
+        )
         const documents = response.data.documents
         console.log(documents)
-
-        // Réinitialiser les dossiers et fichiers
         this.folders = []
         this.files = []
-
-        // Organiser les documents par dossiers
         const folderMap = new Map()
+        let totalSize = 0
 
-        documents.forEach(doc => {
-          const folderName = doc.folder || 'Racine';
-          
-          if (!folderMap.has(folderName)) {
-            folderMap.set(folderName, {
-              id: folderMap.size + 1,
-              name: folderName,
-              documents: [] // Assurez-vous que chaque dossier a cette propriété
-            });
+        documents.forEach((doc) => {
+          const folderName = doc.folder || 'Racine'
+          const fileSizeMB = parseFloat(doc.size.replace(' MB', ''))
+          totalSize += fileSizeMB
+
+          if (/\.(pdf|docx?|xlsx?)$/i.test(doc.title)) {
+            this.storage.documents += fileSizeMB
+          } else if (/\.(png|jpg|jpeg|gif)$/i.test(doc.title)) {
+            this.storage.media += fileSizeMB
           }
-        
+
+          // Organize folders
+          if (!folderMap.has(folderName)) {
+            folderMap.set(folderName, { id: folderMap.size + 1, name: folderName, documents: [] });
+          }
+
           folderMap.get(folderName).documents.push({
             id: doc.id,
             name: doc.title,
             dateAdded: new Date(doc.createdTime).toLocaleDateString(),
             size: doc.size,
             url: doc.url
-          });
-        
+          })
           this.files.push({
             id: doc.id,
             name: doc.title,
             dateAdded: new Date(doc.createdTime).toLocaleDateString(),
             size: doc.size,
             url: doc.url
-          });
-        });
+          })
+        })
+        console.log(totalSize)
+        console.log("##########")
+        console.log(this.storage)
 
+        this.storage.freeSpace = Math.max(1024 - totalSize, 0);
         this.folders = Array.from(folderMap.values())
-
-        // Mettre à jour le localStorage après récupération des documents
         localStorage.setItem('folders', JSON.stringify(this.folders))
-        this.documentsLoaded = true; 
-        
+        this.documentsLoaded = true
+
       } catch (error) {
         console.error('Error fetching documents for folders:', error)
       }
     },
 
     async refreshDocuments() {
-      const token = localStorage.getItem('jwt_token');
-      await this.fetchFoldersAndFiles(token); // Recharge les dossiers et fichiers
+      const token = localStorage.getItem('jwt_token')
+      await this.fetchFoldersAndFiles(token) // Recharge les dossiers et fichiers
     },
 
     // Créer un nouveau dossier
     async createFolder(folderName) {
-
       if (!folderName || folderName.trim() === '') {
         toast.error('Le nom du dossier ne peut pas être vide.')
-        return 
+        return
       }
 
       try {
@@ -106,7 +112,6 @@ export const useAdminDocumentStore = defineStore('adminDocumentStore', {
         }
 
         toast.success(response.data.message)
-
       } catch (error) {
         toast.error(error.response.data.message)
         console.error('Erreur lors de la création du dossier:', error)
@@ -207,12 +212,16 @@ export const useAdminDocumentStore = defineStore('adminDocumentStore', {
         const formData = new FormData()
         formData.append('file', file)
 
-        const response = await axios.post('https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/file/upload', formData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data'
+        const response = await axios.post(
+          'https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/file/upload',
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'multipart/form-data'
+            }
           }
-        })
+        )
 
         if (response.status === 201) {
           this.files.push(response.data.file)

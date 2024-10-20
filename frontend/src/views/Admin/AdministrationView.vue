@@ -122,13 +122,13 @@
                     <div class="mb-4">
                         <label for="teamName" class="block text-gray-medium text-sm mb-2">Nom de l'équipe:</label>
                         <input v-model="form.name" type="text" id="teamName"
-                            class="pl-4 mt-1 p-3 py-5 w-full rounded-md text-sm border border-gray-light" required />
+                            class="pl-4 mt-1 p-2 py-3 w-full rounded-md text-xs border border-gray-light" required />
                     </div>
                     <div class="mb-4">
                         <label for="teamMembers" class="block text-gray-medium text-sm mb-2">Ajouter des
                             membres:</label>
                         <MultiSelectDropdown :items="availableUsers" v-model="selectedMembers"
-                            class="pl-4 mt-1 p-3 py-5 w-full rounded-md text-sm border border-gray-light" />
+                            class="pl-4 mt-1 p-2 py-3 w-full rounded-md text-xs border border-gray-light" />
                     </div>
                     <div class="flex justify-end">
                         <button type="button" @click="closeTeamModal"
@@ -271,14 +271,14 @@
 
                 <div>
                     <!-- Onglets pour basculer entre les sections -->
-                    <div class="flex border-b border-gray-light mb-4">
+                    <!-- <div class="flex border-b border-gray-light mb-4">
                         <button :class="{
                             'py-2 px-4 text-sm font-medium border-b-2 border-oxford-blue': activeTab === 'form',
                             'py-2 px-4 text-sm font-medium text-gray-600 border-b-2 border-transparent hover:border-gray-light': activeTab !== 'form'
                         }" @click="activeTab = 'form'">
                             {{ isEditing ? 'Modifier Utilisateur' : 'Ajouter un Utilisateur' }}
                         </button>
-                    </div>
+                    </div> -->
 
                     <div v-if="activeTab === 'form'">
                         <form @submit.prevent="saveUser" class="text-night">
@@ -286,7 +286,7 @@
                                 <label for="nom" class="block text-sm font-medium">Nom:</label>
                                 <div class="relative flex items-center">
                                     <input v-model="form.nom" type="text" id="nom"
-                                        class="pl-4 mt-1 p-3 py-5 w-full rounded-md text-sm border border-gray-light"
+                                        class="pl-4 mt-1 p-2 py-3 w-full rounded-md text-xs border border-gray-light"
                                         required />
                                 </div>
                             </div>
@@ -295,7 +295,7 @@
                                 <label for="prenom" class="block text-sm font-medium">Prénom:</label>
                                 <div class="relative flex items-center">
                                     <input v-model="form.prenom" type="text" id="prenom"
-                                        class="pl-4 mt-1 p-3 py-5 w-full rounded-md text-sm border border-gray-light"
+                                        class="pl-4 mt-1 p-2 py-3 w-full rounded-md text-xs border border-gray-light"
                                         required />
                                 </div>
                             </div>
@@ -307,7 +307,7 @@
                                         <Mail class="text-gray-light w-5 h-5" />
                                     </span>
                                     <input v-model="form.email" :disabled="isEditing" type="email" id="email"
-                                        class="pl-12 mt-1 p-3 py-5 w-full rounded-md text-sm border border-gray-light" :class="isEditing ? 'bg-gray-light' : ''"
+                                        class="pl-12 mt-1 p-2 py-3 w-full rounded-md text-xs border border-gray-light" :class="isEditing ? 'bg-gray-light' : ''"
                                         required />
                                 </div>
                             </div>
@@ -317,7 +317,7 @@
                                 <div class="relative flex items-center">
                                     <vue-tel-input v-model="form.telephone" :only-countries="['FR', 'US', 'GB', 'BJ']"
                                         @blur="validatePhone(form.telephone)" placeholder="Entrez le numéro de téléphone"
-                                        class="pl-4 mt-1 p-3 py-5 w-full rounded-md text-sm border border-gray-light" />
+                                        class="pl-4 p-1 w-full rounded-md text-xs border border-gray-light" />
                                 </div>
                             </div>
 
@@ -325,7 +325,7 @@
                                 <label for="role" class="block text-sm font-medium">Rôle:</label>
                                 <div class="relative flex items-center">
                                     <select v-model="form.role" id="role"
-                                        class="pl-4 mt-1 p-3 py-5 w-full rounded-md text-sm border border-gray-light bg-white"
+                                        class="pl-4 mt-1 p-2 py-3 w-full rounded-md text-xs border border-gray-light bg-white"
                                         required>
                                         <option disabled value="">Sélectionnez un rôle</option>
                                         <option v-for="role in roles" :key="role" :value="role">{{ role }}</option>
@@ -337,7 +337,7 @@
                                 <label for="role" class="block text-sm font-medium">Poste:</label>
                                 <div class="relative flex items-center">
                                     <select v-model="form.poste" id="poste"
-                                        class="pl-4 mt-1 p-3 py-5 w-full rounded-md text-sm border border-gray-light bg-white"
+                                        class="pl-4 mt-1 p-2 py-3 w-full rounded-md text-xs border border-gray-light bg-white"
                                         required>
                                         <option disabled value="">Sélectionnez un poste</option>
                                         <option v-for="poste in posteStore.postes" :key="poste.id" :value="poste.id">{{
@@ -349,7 +349,7 @@
                             <div class="mb-4 relative">
                                 <label for="equipe" class="block text-sm font-medium">Équipe:</label>
                                 <MultiSelectDropdown :items="equipeOptions" v-model="selectedEquipes"
-                                    class="pl-4 mt-1 p-3 py-5 w-full rounded-md text-sm border border-gray-light" />
+                                    class="pl-4 mt-1 p-2 py-3 w-full rounded-md text-xs border border-gray-light" />
                             </div>
 
                             <div class="flex justify-end">

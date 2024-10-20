@@ -68,8 +68,8 @@ const handleOutsideClick = (event) => {
 }
 
 .modal-content {
+  max-height: 90vh;
   background-color: #fff;
-  /* width: 90%; */
   padding: 20px;
   border-radius: 10px;
   overflow-y: scroll;

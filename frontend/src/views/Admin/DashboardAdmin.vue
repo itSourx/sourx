@@ -14,7 +14,7 @@
           <UserRound class="w-8 h-8 mr-6" />
           <div>
             <h2 class="text-xl">Utilisateurs</h2>
-            <p class="text-3xl font-bold">{{ totalUsers }}</p>
+            <div class="font-bold text-xl">{{ totalUsers }}</div>
             <router-link to="/management/administration" class="hover:underline">Gérer les Utilisateurs</router-link>
           </div>
         </div>
@@ -22,7 +22,7 @@
           <ClipboardList class="text-xl text-night mr-6" />
           <div>
             <h2 class="text-xl">Équipes</h2>
-            <p class="text-3xl font-bold">{{ totalTeams }}</p>
+            <div class="font-bold">{{ totalTeams }}</div>
             <router-link to="/management/administration" class="hover:underline">Gérer les Équipes</router-link>
           </div>
         </div>
@@ -30,15 +30,15 @@
           <UserRound class="w-8 h-8 mr-6" />
           <div>
             <h2 class="text-xl">Documents</h2>
-            <p class="text-3xl font-bold text-green">{{ totalDocuments }}</p>
+            <div class="font-bold text-green">{{ totalDocuments }}</div>
             <router-link to="/management/documents" class="hover:underline">Gérer les Documents</router-link>
           </div>
         </div>
-        <div class="bg-zaffre text-white p-6 rounded-lg shadow-md flex items-center">
+        <div class="bg-red text-white p-6 rounded-lg shadow-md flex items-center">
           <Hourglass class="w-8 h-8 mr-6" />
           <div>
             <h2 class="text-xl">Demandes à valider</h2>
-            <p class="text-3xl font-bold text-white">{{ pendingRequests }}</p>
+            <div class="font-bold text-white">{{ pendingRequests }}</div>
             <router-link to="/home/requests" class="hover:underline">Gérer les demandes</router-link>
           </div>
         </div>
@@ -54,21 +54,21 @@
             </div>
             <div class="w-1/2">
               <div class="flex flex-col items-center">
-                <div class="text-3xl font-bold text-gray-medium">
-                  {{ usedStorage }} / {{ totalStorage }} GB
+                <div class="font-bold text-gray-medium">
+                  {{ usedStorage }} / {{ totalStorage }} MB
                 </div>
                 <div class="mt-4 flex flex-col space-y-2">
                   <div class="flex items-center">
-                    <div class="w-3 h-3 bg-zaffre rounded-full mr-2"></div>
-                    <div>Documents : {{ documentStorage }} GB</div>
+                    <div class="w-3 h-3 rounded-full mr-2" :style="{ backgroundColor: '#039487' }"></div>
+                    <p>Documents : {{ storageDetails.Documents }} MB</p>
                   </div>
                   <div class="flex items-center">
-                    <div class="w-3 h-3 bg-green rounded-full mr-2"></div>
-                    <div>Médias : {{ mediaStorage }} GB</div>
+                    <div class="w-3 h-3 rounded-full mr-2" :style="{ backgroundColor: '#FFCE56' }"></div>
+                    <p>Médias : {{ storageDetails.Médias }} MB</p>
                   </div>
                   <div class="flex items-center">
-                    <div class="w-3 h-3 bg-yellow rounded-full mr-2"></div>
-                    <div>Autres : {{ otherStorage }} GB</div>
+                    <div class="w-3 h-3 rounded-full mr-2" :style="{ backgroundColor: '#FF6384' }"></div>
+                    <p>Espace libre : {{ storageDetails['Espace libre'] }} MB</p>
                   </div>
                 </div>
               </div>
@@ -118,22 +118,30 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import BarChart from '@/components/Charts/BarChart.vue'
 import PieChart from '@/components/Charts/PieChart.vue'
 import LoaderComponent from '@/components/LoaderComponent.vue';
 import NotificationComponent from '@/components/NotificationComponent.vue'
-import { useAdminStore } from '@/stores/AdminStore/AdminStore'
 import { useUserManagementStore } from '@/stores/AdminStore/UserManagementStore'
 import { useAdminDocumentStore } from '@/stores/AdminStore/DocumentsManagementStore'
 import { useDemandStore } from '@/stores/UserStore/DemandStore'
 
 
 const isLoading = ref(true);
-const adminStore = useAdminStore()
 const userStore = useUserManagementStore()
 const documentStore = useAdminDocumentStore()
 const demandsStore = useDemandStore()
 const token = localStorage.getItem('jwt_token')
+
+const storageDetails = computed(() => ({
+  Documents: documentStore.storage.documents.toFixed(2),
+  Médias: documentStore.storage.media.toFixed(2),
+  'Espace libre': documentStore.storage.freeSpace.toFixed(2),
+}));
+
+const usedStorage = computed(
+  () => (documentStore.storage.documents + documentStore.storage.media).toFixed(2)
+);
+const totalStorage = computed(() => 1024); // 1 GB max
 
 const totalUsers = computed(() => userStore.users.length)
 const totalDocuments = computed(() => {
@@ -167,12 +175,7 @@ const recentDocuments = computed(() => {
   // Retourner les 5 premiers documents
   return sortedDocuments.slice(0, 5);
 });
-const storageDetails = computed(() => adminStore.storageDetails)
-const usedStorage = computed(() => adminStore.usedStorage)
-const totalStorage = computed(() => adminStore.totalStorage)
-const documentStorage = computed(() => adminStore.documentStorage)
-const mediaStorage = computed(() => adminStore.mediaStorage)
-const otherStorage = computed(() => adminStore.otherStorage)
+
 
 onMounted(async () => {
   isLoading.value = true;

@@ -26,7 +26,7 @@ export const useUserManagementStore = defineStore('userManagementStore', {
 
       try {
         const response = await axios.post(
-          'https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/allemployees',
+          '/allemployees',
           {},
           {
             headers: {
@@ -92,7 +92,7 @@ export const useUserManagementStore = defineStore('userManagementStore', {
       const token = localStorage.getItem('jwt_token')
 
       try {
-        const response = await axios.post('https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/createUser', newUser, {
+        const response = await axios.post('/createUser', newUser, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -117,7 +117,7 @@ export const useUserManagementStore = defineStore('userManagementStore', {
       const token = localStorage.getItem('jwt_token')
 
       try {
-        const response = await axios.delete(`https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/deleteUser/${userId}`, {
+        const response = await axios.delete(`/deleteUser/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -142,7 +142,7 @@ export const useUserManagementStore = defineStore('userManagementStore', {
 
       try {
         const response = await axios.put(
-          `https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/updateUser/${userId}`,
+          `/updateUser/${userId}`,
           updatedData,
           {
             headers: {
@@ -172,7 +172,7 @@ export const useUserManagementStore = defineStore('userManagementStore', {
 
       try {
         const response = await axios.put(
-          `https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/toggleArchiveStatus/${userId}`,
+          `/toggleArchiveStatus/${userId}`,
           updatedData,
           {
             headers: {
@@ -197,7 +197,7 @@ export const useUserManagementStore = defineStore('userManagementStore', {
 
       try {
         const response = await axios.put(
-          `https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/team/toggleTeamArchiveStatus/${teamName}`,
+          `/team/toggleTeamArchiveStatus/${teamName}`,
           updatedData,
           {
             headers: {
@@ -223,7 +223,7 @@ export const useUserManagementStore = defineStore('userManagementStore', {
       const token = localStorage.getItem('jwt_token')
 
       try {
-        const response = await axios.post('https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/createTeam', newTeam, {
+        const response = await axios.post('/createTeam', newTeam, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -257,7 +257,7 @@ export const useUserManagementStore = defineStore('userManagementStore', {
 
       try {
         const response = await axios.put(
-          `https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/updateTeam/${oldTeamName}`,
+          `/updateTeam/${oldTeamName}`,
           updatedTeam,
           {
             headers: {
@@ -291,7 +291,7 @@ export const useUserManagementStore = defineStore('userManagementStore', {
       const token = localStorage.getItem('jwt_token')
 
       try {
-        const response = await axios.delete(`https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/deleteTeam/${teamName}`, {
+        const response = await axios.delete(`/deleteTeam/${teamName}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

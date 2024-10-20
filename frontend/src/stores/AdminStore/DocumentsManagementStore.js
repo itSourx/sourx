@@ -19,7 +19,7 @@ export const useAdminDocumentStore = defineStore('adminDocumentStore', {
 
       try {
         const response = await axios.post(
-          'https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/getDocumentByUser',
+          '/getDocumentByUser',
           {},
           {
             headers: {
@@ -94,7 +94,7 @@ export const useAdminDocumentStore = defineStore('adminDocumentStore', {
       try {
         const token = localStorage.getItem('jwt_token')
         const response = await axios.post(
-          'https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/folders/create',
+          '/folders/create',
           { Name: folderName },
           {
             headers: {
@@ -123,7 +123,7 @@ export const useAdminDocumentStore = defineStore('adminDocumentStore', {
       try {
         const token = localStorage.getItem('jwt_token')
         const response = await axios.post(
-          `https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/${itemType}/rename`,
+          `/${itemType}/rename`,
           {
             id: itemId,
             newName
@@ -157,7 +157,7 @@ export const useAdminDocumentStore = defineStore('adminDocumentStore', {
       try {
         const token = localStorage.getItem('jwt_token')
         const response = await axios.post(
-          'https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/folder/delete',
+          '/folder/delete',
           { id: folderId },
           {
             headers: {
@@ -182,7 +182,7 @@ export const useAdminDocumentStore = defineStore('adminDocumentStore', {
       try {
         const token = localStorage.getItem('jwt_token')
         const response = await axios.post(
-          'https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/file/delete',
+          '/file/delete',
           { id: fileId },
           {
             headers: {
@@ -213,7 +213,7 @@ export const useAdminDocumentStore = defineStore('adminDocumentStore', {
         formData.append('file', file)
 
         const response = await axios.post(
-          'https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/file/upload',
+          '/file/upload',
           formData,
           {
             headers: {
@@ -248,7 +248,7 @@ export const useAdminDocumentStore = defineStore('adminDocumentStore', {
       try {
         const token = localStorage.getItem('jwt_token')
         const response = await axios.post(
-          'https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/file/move',
+          '/file/move',
           {
             fileId,
             targetFolderId

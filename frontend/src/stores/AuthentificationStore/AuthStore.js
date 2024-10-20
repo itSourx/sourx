@@ -18,7 +18,7 @@ export const useLoginStore = defineStore('loginStore', {
 
       try {
         console.log('Tentative de connexion avec:', { email: data.email })
-        const response = await axios.post('https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/auth/login', {
+        const response = await axios.post('/auth/login', {
           email: data.email,
           mdp: data.password
         })
@@ -71,7 +71,7 @@ export const useLoginStore = defineStore('loginStore', {
         }
 
         const response = await axios.post(
-          'https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/password/first-login-change',
+          '/password/first-login-change',
           { newPassword },
           {
             headers: {

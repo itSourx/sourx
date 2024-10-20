@@ -112,7 +112,7 @@ export const useUserStore = defineStore('userStore', {
       }
 
       try {
-        const response = await axios.post('https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/getAuthUser', {
+        const response = await axios.post('/getAuthUser', {
           token: token
         })
 
@@ -131,7 +131,7 @@ export const useUserStore = defineStore('userStore', {
       try {
         if (this.employees.length === 0) {
           const response = await axios.post(
-            'https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/allemployees',
+            '/allemployees',
             {},
             {
               headers: {

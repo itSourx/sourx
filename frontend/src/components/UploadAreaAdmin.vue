@@ -194,7 +194,7 @@ const sendDocument = async () => {
 
         console.log(formData)
         const response = await axios.post(
-            'https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/sendDocumentByAdmin',
+            '/sendDocumentByAdmin',
             formData,
             {
                 headers: {

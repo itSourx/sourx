@@ -54,7 +54,7 @@ export const useFolderStore = defineStore('folder', {
       
       try {
         const response = await axios.post(
-          'https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/folders/create',
+          '/folders/create',
           {
             Name: folderName
           },
@@ -85,7 +85,7 @@ export const useFolderStore = defineStore('folder', {
     async deleteFolder(folderToRemove) {
       try {
         const response = await axios.delete(
-          `https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/folders/delete/${folderToRemove.name}`,
+          `/folders/delete/${folderToRemove.name}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('jwt_token')}`
@@ -108,7 +108,7 @@ export const useFolderStore = defineStore('folder', {
         if (folderToRename) {
           console.log(folderToRename)
           const response = await axios.put(
-            `https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1/folders/rename/${folderToRename.name}`,
+            `/folders/rename/${folderToRename.name}`,
             { name: newName },
             {
               headers: {

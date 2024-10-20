@@ -12,9 +12,13 @@ import { useUserStore } from '@/stores/UserStore/UserStore'
 import VueAwesomePaginate from 'vue-awesome-paginate'
 import LoaderComponent from '@/components/LoaderComponent.vue'
 import DocumentIcon from '@/components/DocumentIcon.vue'
-
 import Vue3Toastify from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css'
+import axios from 'axios'
+
+const URL_BACKEND = "https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1"
+
+axios.defaults.baseURL = URL_BACKEND
 
 const globalOptions = {
   mode: 'auto'

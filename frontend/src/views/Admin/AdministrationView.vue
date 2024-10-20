@@ -132,7 +132,7 @@
                     </div>
                     <div class="flex justify-end">
                         <button type="button" @click="closeTeamModal"
-                            class="bg-gray-light text-gray-dark py-2 px-4 rounded-md mr-2">
+                            class="bg-gray-light  py-2 px-4 rounded-md mr-2">
                             Annuler
                         </button>
                         <button type="submit" class="bg-oxford-blue hover:bg-zaffre text-white py-2 px-4 rounded-md">
@@ -354,7 +354,7 @@
 
                             <div class="flex justify-end">
                                 <button type="button" @click="closeUserModal"
-                                    class="bg-gray-light text-gray-dark py-2 px-4 rounded-md mr-2">
+                                    class="bg-gray-light  py-2 px-4 rounded-md mr-2">
                                     Annuler
                                 </button>
                                 <button type="submit"

@@ -168,7 +168,7 @@
                                     Déplacer le fichier: {{ fileToMove.name }}
                                 </h3>
                                 <label for="folderSelect"
-                                    class="block text-sm font-medium text-gray-dark mb-2">Sélectionnez un dossier de
+                                    class="block text-sm font-medium  mb-2">Sélectionnez un dossier de
                                     destination :</label>
                                 <select id="folderSelect" v-model="selectedFolderId"
                                     class="block w-full p-2 border border-gray-light rounded-lg">

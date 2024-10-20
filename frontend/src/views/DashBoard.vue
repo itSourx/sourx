@@ -183,7 +183,7 @@
             <div class="p-4 my-2 text-white rounded bg-zaffre">
               <h2 class="text-lg font-semibold flex items-center">
                 <Hourglass class="mr-2" />
-                En cours
+                En cours de traitement
               </h2>
               <p class="text-2xl font-bold">{{ demandsStore.getEnCoursCount() }}</p>
             </div>

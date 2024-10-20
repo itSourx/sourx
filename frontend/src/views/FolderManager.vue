@@ -57,9 +57,9 @@
     <!-- Modal pour renommer le dossier -->
     <ModalVue :isOpen="renameModalOpen" title="Renommer le dossier" @close="closeRenameModal">
       <div class="p-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2">Nouveau nom</label>
+        <label class="block  text-sm font-bold mb-2">Nouveau nom</label>
         <input v-model="newFolderName" type="text"
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+          class="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline" />
         <button @click="renameFolder"
           class="mt-4 bg-blue hover:bg-oxford-blue text-white font-bold py-2 px-4 rounded-md shadow-md">
           Renommer

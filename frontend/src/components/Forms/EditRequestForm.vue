@@ -2,7 +2,7 @@
     <div v-if="formInitialized">
         <form @submit.prevent="handleSubmit">
             <!-- <div class="mb-4">
-                <label for="title" class="block text-sm font-medium text-gray-700">Titre de la demande</label>
+                <label for="title" class="block text-sm font-medium ">Titre de la demande</label>
                 <input type="text" id="title" v-model="form.title"
                     class="mt-1 block w-full px-3 py-2 border border-gray-light rounded-md shadow-sm focus:outline-none focus:ring-blue focus:border-blue"
                     :disabled="!isEditable" />
@@ -10,7 +10,7 @@
 
 
             <div class="mb-4">
-                <label for="title" class="block text-sm font-medium text-gray-700">Titre de la demande</label>
+                <label for="title" class="block text-sm font-medium ">Titre de la demande</label>
                 <select id="motif" v-model="form.motif"
                     class="mt-1 block w-full px-3 py-2 border border-gray-light rounded-md shadow-sm focus:outline-none focus:ring-blue focus:border-blue">
                     <option value="" disabled selected>--Choisir un motif--</option>
@@ -22,14 +22,14 @@
 
 
             <div class="mb-4">
-                <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                <label for="description" class="block text-sm font-medium ">Description</label>
                 <textarea id="description" v-model="form.description" rows="3"
                     class="mt-1 block w-full px-3 py-2 border border-gray-light rounded-md shadow-sm focus:outline-none focus:ring-blue focus:border-blue"
                     :disabled="!isEditable"></textarea>
             </div>
 
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700">Pièces jointes</label>
+                <label class="block text-sm font-medium ">Pièces jointes</label>
                 <div class="upload-area py-16 border-2 border-dashed bg-gray-light cursor-pointer hover:border-blue hover:text-blue mt-2"
                     @dragover.prevent @drop="handleDrop" @click="clickFileInput"
                     :class="{ 'opacity-50 cursor-not-allowed': !isEditable }">

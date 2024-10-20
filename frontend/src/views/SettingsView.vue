@@ -1,6 +1,6 @@
 <template>
   <div class="max-w-7xl mx-auto">
-    <h1 class="text-2xl font-bold mb-6">Mon compte</h1>
+    <h1 class="text-2xl font-bold mb-3">Mon compte</h1>
     <p class="mb-8">Récapitulatif de mes informations</p>
 
     <div class="bg-white p-6 rounded-lg shadow-md">
@@ -13,7 +13,7 @@
         </div>
         <div class="flex items-center">
           <input type="file" @change="uploadProfilePicture" class="hidden" id="fileInput" />
-          <label for="fileInput" class="bg-green text-white py-2 px-4 rounded-md mr-2 cursor-pointer">Télécharger une
+          <label for="fileInput" class="bg-green text-white text-sm py-2 px-4 rounded-md mr-2 cursor-pointer">Télécharger une
             nouvelle photo</label>
           <button @click="deleteProfilePicture" class="bg-red text-white py-2 px-4 rounded-md">
             Supprimer
@@ -36,14 +36,14 @@
               <User class="text-gray-light w-5 h-5" />
             </span>
             <input v-model="firstName" type="text" placeholder="Prénom"
-              class="pl-12 mt-1 p-3 py-5 w-full rounded-md text-sm border border-gray-light" />
+              class="pl-12 mt-1 p-3 py-3 w-full rounded-md text-sm border border-gray-light" />
           </div>
           <div class="relative flex items-center">
             <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
               <User class="text-gray-light w-5 h-5" />
             </span>
             <input v-model="lastName" type="text" placeholder="Nom"
-              class="pl-12 mt-1 p-3 py-5 w-full rounded-md text-sm border border-gray-light" />
+              class="pl-12 mt-1 p-3 py-3 w-full rounded-md text-sm border border-gray-light" />
           </div>
         </div>
       </div>
@@ -55,7 +55,7 @@
             <Mail class="text-gray-light w-5 h-5" />
           </span>
           <input v-model="email" type="email" placeholder="Email" disabled
-            class="pl-12 mt-1 p-3 py-5 w-full rounded-md text-sm border border-gray-light" />
+            class="pl-12 mt-1 p-3 py-3 w-full rounded-md text-sm border border-gray-light" />
         </div>
       </div>
 
@@ -66,7 +66,7 @@
             <PhoneCall class="text-gray-light w-5 h-5" />
           </span>
           <input v-model="telephone" type="tel" placeholder="Téléphone"
-            class="pl-12 mt-1 p-3 py-5 w-full rounded-md text-sm border border-gray-light" />
+            class="pl-12 mt-1 p-3 py-3 w-full rounded-md text-sm border border-gray-light" />
         </div>
       </div>
 
@@ -78,7 +78,7 @@
             <Users class="text-gray-light w-5 h-5" />
           </span>
           <input v-model="role" type="text" placeholder="Rôle"
-            class="pl-12 mt-1 p-3 py-5 w-full rounded-md text-sm border border-gray-light" :disabled="!user.isAdmin" />
+            class="pl-12 mt-1 p-3 py-3 w-full rounded-md text-sm border border-gray-light" :disabled="!user.isAdmin" />
         </div>
       </div>
 
@@ -89,7 +89,7 @@
             <Users class="text-gray-light w-5 h-5" />
           </span>
           <input v-model="equipe" type="text" placeholder="Équipe"
-            class="pl-12 mt-1 p-3 py-5 w-full rounded-md text-sm border border-gray-light" :disabled="!user.isAdmin" />
+            class="pl-12 mt-1 p-3 py-3 w-full rounded-md text-sm border border-gray-light" :disabled="!user.isAdmin" />
         </div>
       </div>
 
@@ -101,14 +101,14 @@
               <LockKeyhole class="text-gray-light w-5 h-5" />
             </span>
             <input v-model="currentPassword" type="password" placeholder="Mot de passe actuel"
-              class="pl-12 mt-1 p-3 py-5 w-full rounded-md text-sm border border-gray-light" />
+              class="pl-12 mt-1 p-3 py-3 w-full rounded-md text-sm border border-gray-light" />
           </div>
           <div class="relative flex items-center w-full">
             <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
               <LockKeyhole class="text-gray-light w-5 h-5" />
             </span>
             <input v-model="newPassword" type="password" placeholder="Nouveau mot de passe"
-              class="pl-12 mt-1 p-3 py-5 w-full rounded-md text-sm border border-gray-light" />
+              class="pl-12 mt-1 p-3 py-3 w-full rounded-md text-sm border border-gray-light" />
           </div>
         </div>
       </div>

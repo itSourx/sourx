@@ -8,14 +8,14 @@
             <div v-if="teams.length > 1" class="flex space-x-4 mb-6 border-b border-gray-light pb-4">
                 <button @click="selectedTeam = 'Tous'" :class="{
                     'bg-oxford-blue text-white shadow-md border border-oxford-blue': selectedTeam === 'Tous',
-                    'text-gray-700 border border-gray-light': selectedTeam !== 'Tous'
+                    ' border border-gray-light': selectedTeam !== 'Tous'
                 }" class="py-4 px-6 rounded-md flex items-center space-x-2 transition-colors duration-300">
                     <span>Tous</span>
                 </button>
 
                 <button v-for="team in teams" :key="team" @click="selectedTeam = team" :class="{
                     'bg-oxford-blue text-white shadow-md border border-oxford-blue': selectedTeam === team,
-                    'text-gray-700 border border-gray-light': selectedTeam !== team
+                    ' border border-gray-light': selectedTeam !== team
                 }" class="py-4 px-6 rounded-md flex items-center space-x-2 transition-colors duration-300">
                     <span>{{ team }}</span>
                 </button>
@@ -139,16 +139,20 @@ const sortKey = ref('')
 const sortOrder = ref('asc')
 
 const filteredUsers = computed(() => {
-    return employeesUnderManager.value.filter(user => {
+    const filtered = employeesUnderManager.value.filter(user => {
         const matchesSearch = user.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
             user.email.toLowerCase().includes(searchQuery.value.toLowerCase());
         const matchesTeam = selectedTeam.value === 'Tous' ||
-            (userEquipe && userEquipe.includes(selectedTeam.value));
-        return matchesSearch && matchesTeam;
+            (user.Equipe && user.Equipe.includes(selectedTeam.value));
+        return matchesSearch && matchesTeam; // Renvoyer l'utilisateur uniquement si les deux conditions sont remplies.
     });
+
+    return filtered;
 })
 
 const sortedUsers = computed(() => {
+    console.log("SORT...")
+    console.log(filteredUsers.value)
     return [...filteredUsers.value].sort((a, b) => {
         let result = 0
         if (a[sortKey.value] < b[sortKey.value]) result = -1

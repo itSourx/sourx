@@ -55,6 +55,7 @@
                 <input v-model="form.name" type="text" placeholder="Nom du Poste"
                     class="border border-gray-light rounded-lg p-2 focus:outline-none focus:ring-2 transition"
                     required />
+                <LoaderComponent v-if="isSaving" />
                 <button type="submit"
                     class="bg-oxford-blue text-white py-2 rounded-md hover:bg-zaffre transition duration-200">
                     Sauvegarder
@@ -62,7 +63,6 @@
             </form>
         </ModalVue>
 
-        <LoaderComponent v-if="posteStore.showLoader" class="mt-4" />
     </div>
 </template>
 
@@ -83,9 +83,11 @@ onMounted(async () => {
 const searchQuery = ref('');
 const isPosteModalOpen = ref(false);
 const isEditing = ref(false);
+const isSaving = ref(false);
 const form = ref({ id: null, name: '', employee_ids: [userStore.user.system_id] });
 
 const filteredPostes = computed(() => {
+    console.log(posteStore.postes)
     return posteStore.postes.filter((poste) =>
         poste.name.toLowerCase().includes(searchQuery.value.toLowerCase())
     );
@@ -104,12 +106,19 @@ const openEditPosteModal = (poste) => {
 };
 
 const savePoste = async () => {
-    if (isEditing.value) {
-        await posteStore.updatePoste(form.value.id, form.value);
-    } else {
-        await posteStore.createPoste(form.value);
+    isSaving.value = true;
+    try {
+        if (isEditing.value) {
+            await posteStore.updatePoste(form.value.id, form.value);
+        } else {
+            await posteStore.createPoste(form.value);
+        }
+        closePosteModal();
+    } catch (error) {
+        console.error('Erreur lors de la sauvegarde du poste', error);
+    } finally {
+        isSaving.value = false; // Arrêter le loader
     }
-    closePosteModal();
 };
 
 const togglePosteArchiveStatus = async (poste) => {
@@ -117,8 +126,12 @@ const togglePosteArchiveStatus = async (poste) => {
         await posteStore.unarchivePoste(poste.id);
     } else {
         if (poste.employees.length > 0) {
-            if (confirm(`Ce poste a ${poste.employees.length} employé(s) assigné(s). Êtes-vous sûr de vouloir archiver ce poste ?`)) {
-                await posteStore.archivePoste(poste.id);
+            const confirmed = confirm(
+                `Ce poste a ${poste.employees.length} employé(s) assigné(s). Êtes-vous sûr de vouloir archiver ce poste ?`
+            );
+
+            if (!confirmed) {
+                return;
             }
         } else {
             await posteStore.archivePoste(poste.id);

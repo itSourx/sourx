@@ -15,19 +15,25 @@ class PosteController extends Controller
     {
         try {
             $userId = TokenHelper::getUserIdFromToken($request)[0]['id']; // Récupération de l'ID utilisateur
-            $currentDate = Carbon::now()->format('n/j/Y');
 
             $data = [
                 'Name' => $request->input('name'),
                 'isArchived' => 0,
-                'create_at' => $currentDate,
-                'created_by' => $userId,
-                'Employee' => $request->input('employee_ids')
+                'created_by' => [$userId],
             ];
 
             $result = AirtableFacade::table('Poste')->create($data);
+            $formattedPoste = [
+                'id' => $result['id'],
+                'name' => $result['fields']['Name'],
+                'isArchived' => $result['fields']['isArchived'] ?? 0,
+                'employees' => $result['fields']['Employee'] ?? [],
+            ];
 
-            return response()->json(['message' => 'Poste créé avec succès', 'data' => $result], 201);
+            return response()->json([
+                'message' => 'Poste créé avec succès',
+                'data' => $formattedPoste,
+            ], 201);
         } catch (\Exception $e) {
             Log::error('Erreur lors de la création du poste: ' . $e->getMessage());
             return response()->json(['message' => 'Erreur lors de la création du poste'], 500);

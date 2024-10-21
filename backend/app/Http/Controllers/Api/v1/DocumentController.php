@@ -356,9 +356,6 @@ class DocumentController extends Controller
             $filteredDocuments = $documentsData->filter(function ($document) {
                 return isset($document['fields']['isArchived']) && $document['fields']['isArchived'] == 0 && $document['fields']['isArchived (from Folder)'][0] == 0;
             });
-            info($documentsData);
-            info("Fiktered");
-            info($filteredDocuments);
 
             // Formater les données des documents
             $mappedDocuments = $filteredDocuments->map(function ($document) use ($airtable_id) {

@@ -13,13 +13,13 @@ export const useFolderStore = defineStore('folder', () => {
 
     try {
       const response = await axios.get(
-        'http://localhost:8000/api/v1/folders/',
+        'https://sourxhr-backend-5190c64de794.herokuapp.com/api/v1/folders/', // Assurez-vous d'utiliser HTTPS
         {
           headers: {
             Authorization: `Bearer ${userStore.token}`,
           },
-        },
-      )
+        }
+      );
       folders.value = response.data
       console.log('folders', folders.value)
     } catch (error) {
@@ -32,7 +32,7 @@ export const useFolderStore = defineStore('folder', () => {
     try {
       console.log(payload)
       const response = await axios.post(
-        'http://localhost:8000/api/v1/folders/create',
+        '/folders/create',
         payload,
       )
     } catch (error) {

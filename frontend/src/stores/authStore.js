@@ -21,7 +21,7 @@ export const useAuthStore = defineStore('auth', () => {
   async function fetchUsers() {
     try {
       const response = await axios.get(
-        'http://localhost:8000/api/v1/auth/users',
+        '/auth/users',
         {
           headers: {
             Authorization: `Bearer ${token.value}`,
@@ -35,7 +35,6 @@ export const useAuthStore = defineStore('auth', () => {
       throw error
     }
   }
-
   // Setter pour le token, stocke également dans localStorage
   function setToken(newToken) {
     token.value = newToken
@@ -58,13 +57,12 @@ export const useAuthStore = defineStore('auth', () => {
 
   // Login: Authentifie et stocke le token
   async function login(email, password) {
-    console.log('login')
     localStorage.removeItem('token')
     localStorage.removeItem('user')
     localStorage.removeItem('expiration')
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/v1/auth/login',
+        '/auth/login',
         {
           email: email,
           password: password,
@@ -105,7 +103,7 @@ export const useAuthStore = defineStore('auth', () => {
   async function createUser(userData) {
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/v1/auth/createUser',
+        '/auth/createUser',
         userData,
         {
           headers: {
@@ -125,7 +123,7 @@ export const useAuthStore = defineStore('auth', () => {
     console.log(updatedData)
     try {
       const response = await axios.put(
-        'http://localhost:8000/api/v1/auth/updateUser',
+        '/auth/updateUser',
         updatedData,
         {
           headers: {
@@ -144,7 +142,7 @@ export const useAuthStore = defineStore('auth', () => {
   async function modifyUser(updatedUser) {
     try {
       const response = await axios.put(
-        `http://localhost:8000/api/v1/auth/modifyUser/${updatedUser.id}`,
+        `/auth/modifyUser/${updatedUser.id}`,
         updatedUser,
         {
           headers: {
@@ -165,7 +163,7 @@ export const useAuthStore = defineStore('auth', () => {
   async function archiveUser(userId) {
     try {
       const response = await axios.patch(
-        `http://localhost:8000/api/v1/auth/archiveUser/${userId}`,
+        `/auth/archiveUser/${userId}`,
         {},
         {
           headers: {
@@ -182,7 +180,7 @@ export const useAuthStore = defineStore('auth', () => {
   async function checkEmail(email) {
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/v1/auth/checkEmail',
+        '/auth/checkEmail',
         { email },
       )
     } catch (error) {
@@ -194,7 +192,7 @@ export const useAuthStore = defineStore('auth', () => {
   async function verifyCode(email, code) {
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/v1/auth/verifyCode',
+        '/auth/verifyCode',
         { email, code },
       )
     } catch (error) {
@@ -206,7 +204,7 @@ export const useAuthStore = defineStore('auth', () => {
   async function resetPassword(email, newPassword) {
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/v1/auth/resetPassword',
+        '/auth/resetPassword',
         { email: email, password: newPassword },
       )
       router.push('/home')

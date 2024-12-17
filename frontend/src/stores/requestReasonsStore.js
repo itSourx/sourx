@@ -17,7 +17,7 @@ export const useRequestReasons = defineStore('requestReasons', () => {
     error.value = null
     try {
       const response = await axios.get(
-        'http://localhost:8000/api/v1/requestReasons',
+        '/requestReasons',
       )
       requestReasons.value = response.data.reasons
         .map(reason => ({
@@ -44,7 +44,7 @@ export const useRequestReasons = defineStore('requestReasons', () => {
   async function addRequestReason(newReason) {
     try {
       await axios.post(
-        'http://localhost:8000/api/v1/requestReasons/create',
+        '/requestReasons/create',
         newReason,
       )
       await fetchRequestReasons(true)
@@ -56,7 +56,7 @@ export const useRequestReasons = defineStore('requestReasons', () => {
   async function updateRequestReason(updatedReason) {
     try {
       await axios.put(
-        `http://localhost:8000/api/v1/requestReasons/update/${updatedReason.id}`,
+        `/requestReasons/update/${updatedReason.id}`,
         updatedReason,
       )
       await fetchRequestReasons(true)
@@ -67,7 +67,7 @@ export const useRequestReasons = defineStore('requestReasons', () => {
 
   async function deleteRequestReason(id) {
     try {
-      await axios.delete(`http://localhost:8000/api/v1/requestReasons/${id}`)
+      await axios.delete(`/requestReasons/${id}`)
       await fetchRequestReasons(true)
     } catch (err) {
       console.error('Erreur de suppression du motif:', err)

@@ -12,13 +12,11 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
-    "@vueup/vue-quill": "^1.2.0",
     "axios": "^1.7.7",
     "element-plus": "^2.8.6",
     "flag-icons": "^7.2.3",
     "html2pdf.js": "^0.10.2",
     "pinia": "^2.2.4",
-    "quill": "^2.0.2",
     "vue": "^3.5.12",
     "vue-router": "^4.4.5",
     "vue-tel-input": "^9.2.0"

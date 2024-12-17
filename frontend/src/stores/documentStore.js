@@ -14,7 +14,7 @@ export const useDocumentStore = defineStore('document', () => {
 
     try {
       const response = await axios.get(
-        'http://localhost:8000/api/v1/documents/',
+        '/documents/',
         {
           params: { page, per_page: perPage.value },
           headers: { Authorization: `Bearer ${userStore.token}` },
@@ -34,7 +34,7 @@ export const useDocumentStore = defineStore('document', () => {
   const createDocument = async payload => {
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/v1/documents/create',
+        '/documents/create',
         payload,
         {
           headers: {
@@ -52,7 +52,7 @@ export const useDocumentStore = defineStore('document', () => {
   const removeFile = async fileId => {
     try {
       await axios.delete(
-        `http://localhost:8000/api/v1/documents/delete/${fileId}/`,
+        `/documents/delete/${fileId}/`,
         {
           headers: {
             Authorization: `Bearer ${userStore.token}`,

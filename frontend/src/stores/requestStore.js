@@ -18,7 +18,7 @@ export const useRequestStore = defineStore('request', () => {
     error.value = null
     try {
       const response = await axios.get(
-        'http://localhost:8000/api/v1/requests/',
+        '/requests/',
         {
           headers: {
             Authorization: `Bearer ${userStore.token}`,
@@ -39,7 +39,7 @@ export const useRequestStore = defineStore('request', () => {
     try {
       loading.value = true
       const response = await axios.post(
-        'http://localhost:8000/api/v1/requests/create/',
+        '/requests/create/',
         newRequest,
         {
           headers: {
@@ -61,7 +61,7 @@ export const useRequestStore = defineStore('request', () => {
   const deleteRequest = async requestId => {
     try {
       await axios.delete(
-        `http://localhost:8000/api/v1/requests/delete/${requestId}/`,
+        `/requests/delete/${requestId}/`,
         {
           headers: {
             Authorization: `Bearer ${userStore.token}`,
@@ -78,7 +78,7 @@ export const useRequestStore = defineStore('request', () => {
   const updateRequest = async (requestId, requestUpdated) => {
     try {
       const response = await axios.put(
-        `http://localhost:8000/api/v1/requests/update/${requestId}/`,
+        `/requests/update/${requestId}/`,
         requestUpdated,
         {
           headers: {
@@ -97,7 +97,7 @@ export const useRequestStore = defineStore('request', () => {
   const takeChargeRequest = async requestId => {
     try {
       const response = await axios.put(
-        `http://localhost:8000/api/v1/requests/takeChargeRequest/${requestId}/`,
+        `/requests/takeChargeRequest/${requestId}/`,
         {
           headers: {
             Authorization: `Bearer ${userStore.token}`,
@@ -116,7 +116,7 @@ export const useRequestStore = defineStore('request', () => {
     const requestId = formData.get('requestId')
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/v1/requests/accept/${requestId}/`,
+        `/requests/accept/${requestId}/`,
         formData,
         {
           headers: {
@@ -136,7 +136,7 @@ export const useRequestStore = defineStore('request', () => {
   const rejectRequest = async requestId => {
     try {
       const response = await axios.put(
-        `http://localhost:8000/api/v1/requests/reject/${requestId}/`,
+        `/requests/reject/${requestId}/`,
         {
           headers: {
             Authorization: `Bearer ${userStore.token}`,
@@ -155,7 +155,7 @@ export const useRequestStore = defineStore('request', () => {
   const validateRequest = async requestId => {
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/v1/requests/validate/${requestId}/`,
+        `/requests/validate/${requestId}/`,
         {},
         {
           headers: {

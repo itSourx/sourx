@@ -12,7 +12,7 @@ export const useCompanyStore = defineStore('company', () => {
   async function fetchCompanyInfo() {
     isLoading.value = true
     try {
-      const response = await axios.get('http://localhost:8000/api/v1/company')
+      const response = await axios.get('/company')
       companyInfo.value = response.data
       console.log(companyInfo.value)
     } catch (error) {
@@ -29,7 +29,7 @@ export const useCompanyStore = defineStore('company', () => {
   async function updateCompany(updatedData) {
     try {
       await axios.patch(
-        'http://localhost:8000/api/v1/company/update',
+        '/company/update',
         updatedData,
       )
       companyInfo.value = { ...companyInfo.value, ...updatedData }
@@ -48,7 +48,7 @@ export const useCompanyStore = defineStore('company', () => {
       console.log(formData)
       console.log('/////////------////')
       const response = await axios.post(
-        `http://localhost:8000/api/v1/company/upload-${type}`,
+        `/company/upload-${type}`,
         formData,
         {
           headers: {

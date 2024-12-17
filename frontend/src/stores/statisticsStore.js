@@ -18,14 +18,11 @@ export const useStatisticsStore = defineStore('statistics', () => {
   const fetchStatistics = async () => {
     error.value = null
     try {
-      const response = await axios.get(
-        'http://localhost:8000/api/v1/statistics',
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
+      const response = await axios.get('https://sourxhr-backend-5190c64de794.herokuapp.com/api/v1/statistics', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-      )
+      });
       statistics.value = response.data
     } catch (error) {
       error.value = 'Erreur lors de la récupération des statistiques'

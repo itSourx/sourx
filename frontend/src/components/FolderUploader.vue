@@ -7,7 +7,7 @@
 
             <el-form-item label="Télécharger des fichiers">
                 <el-upload v-model:file-list="fileList" class="upload-demo w-full" drag :auto-upload="false"
-                    action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" multiple
+                     multiple
                     :on-change="handleFileChange" :show-file-list="true" accept=".jpg,.png,.pdf,.doc,.docx,.txt">
                     <el-icon class="el-icon--upload">
                         <UploadFilled />

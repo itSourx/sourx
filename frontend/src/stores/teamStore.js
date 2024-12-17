@@ -12,7 +12,7 @@ export const useTeamStore = defineStore('team', () => {
     if (!reload && teams.value.length > 0) return
     isLoading.value = true
     try {
-      const response = await axios.get('http://localhost:8000/api/v1/teams')
+      const response = await axios.get('/teams')
       console.log(response)
       teams.value = response.data
     } catch (error) {
@@ -26,7 +26,7 @@ export const useTeamStore = defineStore('team', () => {
   async function createTeam(newTeam) {
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/v1/teams/create',
+        '/teams/create',
         newTeam,
       )
       teams.value.push(response.data)
@@ -40,7 +40,7 @@ export const useTeamStore = defineStore('team', () => {
   async function updateTeam(teamId, updatedData) {
     try {
       const response = await axios.patch(
-        `http://localhost:8000/api/v1/teams/update/${teamId}`,
+        `/teams/update/${teamId}`,
         updatedData,
       )
     } catch (error) {
@@ -53,7 +53,7 @@ export const useTeamStore = defineStore('team', () => {
   async function updateTeamStatus(teamId, newStatut) {
     try {
       const response = await axios.patch(
-        `http://localhost:8000/api/v1/teams/${teamId}/status`,
+        `/teams/${teamId}/status`,
         {
           status: newStatut,
         },
@@ -74,7 +74,7 @@ export const useTeamStore = defineStore('team', () => {
   // Supprimer une équipe
   async function deleteTeam(teamId) {
     try {
-      await axios.delete(`http://localhost:8000/api/v1/teams/${teamId}`)
+      await axios.delete(`/teams/${teamId}`)
       teams.value = teams.value.filter(team => team.id !== teamId)
     } catch (error) {
       console.error("Erreur lors de la suppression de l'équipe:", error)

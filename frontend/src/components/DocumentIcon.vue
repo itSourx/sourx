@@ -1,56 +1,51 @@
 <template>
-  <img :src="iconSrc" alt="Document Icon" class="w-6 h-6 mr-2" />
+    <img :src="iconSrc" :alt="fileName" class="document-icon" />
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import pdfIcon from '@/assets/DocumentIcons/pdf.png';
-import docIcon from '@/assets/DocumentIcons/doc.png';
-import xlsIcon from '@/assets/DocumentIcons/xls.png';
-import officeIcon from '@/assets/DocumentIcons/office.png';
-import txtIcon from '@/assets/DocumentIcons/txt.png';
-import defaultIcon from '@/assets/DocumentIcons/default.png';
-import folderDocumentIcon from '@/assets/DocumentIcons/folder_document_icon.svg';
+import { computed } from 'vue';
 
+// Props pour passer le nom du fichier
+const props = defineProps(['fileName']);
 
-const props = defineProps({
-  fileName: {
-    type: String,
-    required: true
-  },
-  isFolder: {
-    type: Boolean,
-    default: false
-  }
-})
+const getFileExtension = (fileName) => {
+    if (!fileName) return 'default';
+    if (!fileName.includes('.')) return 'folder';
+    const parts = fileName.split('.');
+    return parts.length > 1 ? parts.pop().toLowerCase() : 'default';
+};
 
-const useDocumentIcon = (fileName, isFolder) => {
-  if (isFolder) {
-    return folderDocumentIcon
-  }
-
-  const fileExtension = fileName.split('.').pop().toLowerCase()
-
-  switch (fileExtension) {
-    case 'pdf':
-      return pdfIcon
-    case 'doc':
-    case 'docx':
-      return docIcon
-    case 'xls':
-    case 'xlsx':
-      return xlsIcon
-    case 'ppt':
-    case 'pptx':
-      return officeIcon
-    case 'txt':
-      return txtIcon
-    default:
-      return defaultIcon
-  }
-}
-
+// Computed property pour déterminer l'icône basée sur l'extension de fichier
 const iconSrc = computed(() => {
-  return useDocumentIcon(props.fileName, props.isFolder)
-})
+    const ext = getFileExtension(props.fileName);
+
+    switch (ext) {
+        case 'doc':
+        case 'docx':
+            return new URL('@/assets/DocumentsIcons/doc.png', import.meta.url).href;
+        case 'ppt':
+        case 'pptx':
+            return new URL('@/assets/DocumentsIcons/ppt.png', import.meta.url).href;
+        case 'xls':
+        case 'xlsx':
+            return new URL('@/assets/DocumentsIcons/xls.png', import.meta.url).href;
+        case 'txt':
+            return new URL('@/assets/DocumentsIcons/txt.png', import.meta.url).href;
+        case 'pdf':
+            return new URL('@/assets/DocumentsIcons/pdf.png', import.meta.url).href;
+        case 'folder':
+            return new URL('@/assets/DocumentsIcons/folder.png', import.meta.url).href;
+        default:
+            return new URL('@/assets/DocumentsIcons/default.png', import.meta.url).href;
+    }
+});
 </script>
+
+<style scoped>
+.document-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+</style>

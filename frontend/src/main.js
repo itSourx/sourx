@@ -1,46 +1,25 @@
+import './assets/main.css'
 import './index.css'
-
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import VueTelInput from 'vue-tel-input'
-import 'vue-awesome-paginate/dist/style.css'
-import '../node_modules/vue-tel-input/dist/vue-tel-input.css';
+import 'vue-tel-input/vue-tel-input.css'
+
 import App from './App.vue'
 import router from './router'
-import lucideIcons from './lucide-icons'
-import { useUserStore } from '@/stores/UserStore/UserStore'
-import VueAwesomePaginate from 'vue-awesome-paginate'
-import LoaderComponent from '@/components/LoaderComponent.vue'
-import DocumentIcon from '@/components/DocumentIcon.vue'
-import Vue3Toastify from 'vue3-toastify'
-import 'vue3-toastify/dist/index.css'
-import axios from 'axios'
-
-const URL_BACKEND = "https://sourxhrtest-a90509d4033e.herokuapp.com/api/v1"
-
-axios.defaults.baseURL = URL_BACKEND
-
-const globalOptions = {
-  mode: 'auto'
-}
+import ElementPlus from 'element-plus'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import 'element-plus/dist/index.css'
+import 'flag-icons/css/flag-icons.min.css'
 
 const app = createApp(App)
 
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
 app.use(createPinia())
+app.use(VueTelInput)
+app.use(ElementPlus)
 app.use(router)
-app.use(lucideIcons)
-app.use(Vue3Toastify, {
-  autoClose: 3000,
-  position: 'top-right'
-})
-app.use(VueAwesomePaginate)
-app.use(VueTelInput, globalOptions)
 
-app.component('LoaderComponent', LoaderComponent)
-app.component('DocumentIcon', DocumentIcon)
-
-const userStore = useUserStore()
-
-userStore.loadUserFromLocalStorage().then(() => {
-  app.mount('#app')
-})
+app.mount('#app')

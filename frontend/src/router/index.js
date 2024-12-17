@@ -1,132 +1,140 @@
+import { defineAsyncComponent } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import AuthView from '@/views/Auth/AuthView.vue'
-import FirstLoginChangePassword from '@/views/Auth/FirstLoginChangePassword.vue'
-
-const requireAuth = (to, from, next) => {
-  const token = localStorage.getItem('jwt_token')
-  if (token) {
-    const user = JSON.parse(localStorage.getItem('user_data'))
-    if (to.meta.roles && !to.meta.roles.includes(user.role)) {
-      next({ path: '/', replace: true })
-    } else {
-      next()
-    }
-  } else {
-    next({ path: '/', replace: true })
-  }
-}
-
+import HomeView from '@/views/HomeView.vue'
+import AuthView from '@/views/AuthView.vue'
+import LoginView from '../views/auth/LoginView.vue'
+import RegisterView from '../views/auth/RegisterView.vue'
+import ForgotPasswordView from '../views/auth/ForgotPasswordView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    { path: '/', redirect: '/auth' },
     {
-      path: '/',
+      path: '/auth',
       name: 'auth',
-      component: AuthView
-    },
-    {
-      path: '/first-login-change-password',
-      name: 'firstLogin',
-      component: FirstLoginChangePassword
-    },
-    {
-      path: '/management',
-      component: () => import('../views/MainPage.vue'),
-      beforeEnter: [requireAuth] /* requireAdmin */,
+      component: AuthView,
       children: [
+        { path: 'login', name: 'login', component: LoginView },
+        { path: 'register', name: 'register', component: RegisterView },
         {
-          path: '',
-          name: 'DashboardAdmin',
-          component: () => import('../views/Admin/DashboardAdmin.vue'),
-          meta: {
-            forAdmin: true
-          }
+          path: 'forgot-password',
+          name: 'forgot-password',
+          component: ForgotPasswordView,
         },
-        {
-          path: 'documents',
-          name: 'Documents',
-          component: () => import('../views/Admin/DocumentsAdmin.vue'),
-          meta: {
-            forAdmin: true
-          }
-        },
-        {
-          path: 'administration',
-          name: 'Administration',
-          component: () => import('../views/Admin/AdministrationView.vue'),
-          meta: {
-            forAdmin: true
-          }
-        }
-      ]
+        { path: '', redirect: '/auth/login' },
+      ],
     },
     {
       path: '/home',
-      component: () => import('../views/MainPage.vue'),
-      beforeEnter: requireAuth,
-      children: [
-        {
-          path: '',
-          name: 'Dashboard',
-          component: () => import('../views/DashBoard.vue'),
-          meta: {
-            forAdmin: false
-          }
-        },
-        {
-          path: 'documents',
-          name: 'Mes Documents',
-          component: () => import('../views/DocumentsView.vue'),
-          meta: {
-            forAdmin: false
-          }
-        },
-        {
-          path: 'activity',
-          name: 'Journal',
-          component: () => import('../views/JournalView.vue'),
-          meta: {
-            forAdmin: false
-          }
-        },
-        {
-          path: 'requests',
-          name: 'Mes demandes',
-          component: () => import('../views/RequestView.vue'),
-          meta: {
-            forAdmin: false
-          }
-        },
-        {
-          path: 'myteam',
-          name: 'Mon équipe',
-          component: () => import('../views/MyTeam.vue'),
-          meta: {
-            forAdmin: false,
-            roles: ['Manager']
-          }
-        },
-        {
-          path: 'settings',
-          name: 'Paramètres',
-          component: () => import('../views/SettingsView.vue'),
-          meta: {
-            forAdmin: false
-          }
-        }
-      ]
+      name: 'home',
+      redirect: '/documents',
     },
     {
-      path: '/:pathMatch(.*)',
-      component: () => import('../views/NotFoundView.vue')
-    }
-  ]
+      path: '/dashboard',
+      name: 'dashboard',
+      component: () => import('@/views/DashboardView.vue'),
+      meta: { requiresAuth: true, requiresRole: 'Director' },
+    },
+    {
+      path: '/documents',
+      name: 'documents',
+      component: HomeView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/team',
+      name: 'team',
+      component: () => import('@/views/TeamView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/requests',
+      name: 'requests',
+      component: () => import('@/views/RequestsView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/models',
+      name: 'models',
+      component: () =>
+        defineAsyncComponent(() => import('@/views/ModelsView.vue')),
+      meta: { requiresAuth: true, requiresRole: ['Director', 'Manager'] },
+    },
+    {
+      path: '/settings/configuration',
+      name: 'configuration',
+      component: () => import('@/views/settings/ConfigurationView.vue'),
+      meta: { requiresAuth: true, requiresRole: 'Director' },
+    },
+    {
+      path: '/settings/user-management',
+      name: 'user-management',
+      component: () => import('@/views/settings/UserManagementView.vue'),
+      meta: { requiresAuth: true, requiresRole: 'Director' },
+    },
+    {
+      path: '/settings/request-reasons',
+      name: 'request-reasons',
+      component: () => import('@/views/settings/RequestReasonsView.vue'),
+      meta: { requiresAuth: true, requiresRole: 'Director' },
+    },
+    {
+      path: '/settings/team-management',
+      name: 'team-management',
+      component: () => import('@/views/settings/TeamManagementView.vue'),
+      meta: { requiresAuth: true, requiresRole: 'Director' },
+    },
+    {
+      path: '/myprofil',
+      name: 'profile',
+      component: () => import('@/views/ProfilView.vue'),
+      meta: { requiresAuth: true },
+    },
+
+    {
+      path: '/folder/:id',
+      name: 'folder',
+      component: () => import('@/views/FolderView.vue'),
+      props: true,
+      meta: { requiresAuth: true },
+    },
+  ],
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.path !== '/') {
-    requireAuth(to, from, next)
+  if (to.path.startsWith('/folder/')) {
+    const isPageReload = sessionStorage.getItem('pageReloaded')
+
+    if (isPageReload) {
+      sessionStorage.removeItem('pageReloaded') // Supprimer le flag
+      next({ name: 'documents' })
+    } else {
+      sessionStorage.setItem('pageReloaded', 'true')
+      next() // Permet l'accès à la page /folder/:id
+    }
+    return
+  }
+
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  const requiredRoles = to.matched
+    .filter(record => record.meta.requiresRole)
+    .map(record => record.meta.requiresRole)
+    .flat()
+
+  const user = localStorage.getItem('user')
+  const token = localStorage.getItem('token')
+  const expiration = localStorage.getItem('expiration')
+  const userRole = user ? JSON.parse(user).role : null
+
+  if (requiresAuth) {
+    if (!token || !expiration || new Date() > new Date(expiration)) {
+      next({ name: 'login' })
+    } else if (requiredRoles.length && !requiredRoles.includes(userRole)) {
+      next({ name: 'home' }) // Redirigez vers la page d'accueil ou une autre page
+    } else {
+      next()
+    }
   } else {
     next()
   }

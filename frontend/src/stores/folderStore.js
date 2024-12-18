@@ -13,7 +13,7 @@ export const useFolderStore = defineStore('folder', () => {
 
     try {
       const response = await axios.get(
-        'https://sourxhr-backend-5190c64de794.herokuapp.com/api/v1/folders/', // Assurez-vous d'utiliser HTTPS
+        'https://sourxhr-backend-5190c64de794.herokuapp.com/api/v1/folders', // Assurez-vous d'utiliser HTTPS
         {
           headers: {
             Authorization: `Bearer ${userStore.token}`,

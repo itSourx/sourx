@@ -46,7 +46,6 @@ export const useCompanyStore = defineStore('company', () => {
   async function uploadFile(formData, type) {
     try {
       console.log(formData)
-      console.log('/////////------////')
       const response = await axios.post(
         `/company/upload-${type}`,
         formData,
@@ -57,8 +56,6 @@ export const useCompanyStore = defineStore('company', () => {
           },
         },
       )
-      console.log('////////////////////')
-      console.log(response)
       /* companyInfo.value.fields[type] = response.data.url  */ // Mise à jour de l'URL dans les données de l'entreprise
     } catch (error) {
       console.error(`Erreur lors du téléchargement du fichier ${type}:`, error)

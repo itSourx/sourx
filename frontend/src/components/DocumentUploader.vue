@@ -112,7 +112,7 @@ const submitForm = async () => {
         formData.append('files[]', file.raw);
     });
 
-    console.log(Array.from(formData.entries()));
+    // console.log(Array.from(formData.entries()));
 
     try {
         await documentStore.createDocument(formData);

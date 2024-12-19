@@ -18,4 +18,5 @@ const route = useRoute()
 const isAuthRoute = computed(() => {
   return route.path.startsWith('/auth')
 })
+
 </script>

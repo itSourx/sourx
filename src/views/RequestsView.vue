@@ -1,7 +1,9 @@
 <template>
     <div class="max-w-7xl mx-auto mt-4">
         <div class="flex justify-between items-center my-8">
-            <h3 class="text-2xl font-bold">Mes Demandes</h3>
+            <h3 class="text-2xl font-bold">
+                {{ authStore.user.role === 'Director' ? 'Demandes à valider' : 'Mes Demandes' }}
+            </h3>
             <el-button type="primary" class="ml-auto" size="large" @click="toggleNewDemandArea"
                 v-if="authStore.user.role != 'Director'">
                 Nouvelle demande

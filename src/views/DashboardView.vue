@@ -64,7 +64,7 @@ const cardClasses = {
     teams: { label: 'Équipe', color: 'text-indigo-500', background: 'bg-white', route: '/settings/team-management', icon: Tickets },
     requestsCount: { label: 'Demandes à valider', color: 'text-red-500', background: 'bg-white', route: '/requests', icon: CircleCheck },
     usedSpace: { label: 'Espace utilisé en Ko', color: 'text-purple-500', background: 'bg-white', route: '/space', icon: DataAnalysis },
-    foldersCount: { label: 'Dossiers', color: 'text-orange-500', background: 'bg-white', route: '/folders', icon: Folder },
+    foldersCount: { label: 'Dossiers', color: 'text-orange-500', background: 'bg-white', route: '/dashboard', icon: Folder },
 };
 
 // Fonction pour naviguer vers une page

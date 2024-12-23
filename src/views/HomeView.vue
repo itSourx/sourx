@@ -2,7 +2,7 @@
   <main class="max-w-7xl mx-auto mt-4">
     <!-- <ProgressBar></ProgressBar> -->
     <div class="flex justify-between items-center my-8">
-      <h3 class="text-xl font-bold">Mes documents</h3>
+      <h3 class="text-2xl font-bold">Mes documents</h3>
       <el-button type="primary" class="ml-auto" size="large" @click="toggleUploadArea">
         Nouveau document
         <el-icon class="el-icon--right">
@@ -15,7 +15,7 @@
     <TableRecentDocuments :key="reloadDocuments" @row-clicked="openFileDetails" />
 
     <div class="flex justify-between items-center my-8">
-      <h3 class="text-xl font-bold">Mes dossiers récents</h3>
+      <h3 class="text-2xl font-bold">Mes dossiers récents</h3>
       <el-button type="primary" class="ml-auto" size="large" @click="toggleFolderCreation">
         Nouveau dossier
         <el-icon class="el-icon--right">

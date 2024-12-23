@@ -94,10 +94,10 @@
       </el-table-column>
     </el-table>
 
-    <div class="w-full flex justify-end mt-4">
-      <el-pagination :total="totalDocuments" :page-size="pageSize" v-model:current-page="currentPage"
-        @current-change="handlePageChange" layout="total, prev, pager, next" />
-    </div>
+    <div v-if="totalDocuments.value > 0" class="w-full flex justify-end mt-4">
+  <el-pagination :total="totalDocuments.value" :page-size="pageSize.value" v-model:current-page="currentPage.value"
+    @current-change="handlePageChange" layout="total, prev, pager, next" />
+</div>
   </div>
 </template>
 

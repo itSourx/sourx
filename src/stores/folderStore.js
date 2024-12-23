@@ -13,15 +13,21 @@ export const useFolderStore = defineStore('folder', () => {
 
     try {
       const response = await axios.get(
-        'https://sourxhr-backend-5190c64de794.herokuapp.com/api/v1/folders', // Assurez-vous d'utiliser HTTPS
+        '/folders', 
         {
           headers: {
             Authorization: `Bearer ${userStore.token}`,
           },
         }
       );
-      folders.value = response.data
-      console.log('folders', folders.value)
+      const uniqueFolders = Array.from(
+        new Map(response.data.map((folder) => [folder.id, folder])).values()
+      );
+  
+      // Mettre à jour les folders avec les données filtrées
+      folders.value = uniqueFolders;
+  
+      console.log('folders', folders.value);
     } catch (error) {
       console.error('Erreur lors de la récupération des dossiers:', error)
     }

@@ -13,7 +13,8 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import 'element-plus/dist/index.css'
 import 'flag-icons/css/flag-icons.min.css'
 
-axios.defaults.baseURL = 'https://sourxhr-backend-5190c64de794.herokuapp.com/api/v1'
+// axios.defaults.baseURL = 'https://sourxhr-backend-5190c64de794.herokuapp.com/api/v1'
+axios.defaults.baseURL = 'http://localhost:8000/api/v1'
 axios.defaults.timeout = 10000
 const app = createApp(App)
 

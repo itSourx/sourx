@@ -6,7 +6,7 @@
         </div>
 
         <el-table :data="requestReasons" style="width: 100%">
-            <el-table-column prop="reason_title" label="Nom du Motif" width="200" />
+            <el-table-column prop="reason_title" label="Nom du Motif" sortable/>
             <el-table-column label="Modèle PDF">
                 <template #default="scope">
                     <span>{{ scope.row.pdf_model ? 'Oui' : 'Non' }}</span>
@@ -24,11 +24,6 @@
                             <Edit />
                         </el-icon>
                     </el-button>
-                    <!-- <el-button type="danger" size="large" @click="deleteRequestReason(scope.row.id)">
-                        <el-icon>
-                            <Delete />
-                        </el-icon>
-                    </el-button> -->
                 </template>
             </el-table-column>
         </el-table>
@@ -105,18 +100,6 @@ const saveRequestReason = async () => {
         ElMessage.error("Une erreur est survenue lors de l'enregistrement du motif de demande")
     }
 }
-
-// Supprimer un motif de demande
-/* const deleteRequestReason = async (id) => {
-    try {
-        await store.deleteRequestReason(id)
-        ElMessage.success('Motif de demande supprimé avec succès')
-        await store.fetchRequestReasons()
-        requestReasons.value = store.requestReasons
-    } catch (error) {
-        ElMessage.error("Une erreur est survenue lors de la suppression du motif de demande")
-    }
-} */
 
 // Archiver ou désarchiver un motif
 const toggleStatus = async (reason) => {

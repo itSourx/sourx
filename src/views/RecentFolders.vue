@@ -17,6 +17,9 @@
                         {{ folder.fields['last_name (from created_by)'][0] }}</strong> </small>
             </div>
         </el-card>
+        <div v-if="folderList.length === 0" class="col-span-full text-center py-10">
+            <p class="text-sm text-gray-600">Pas de dossier...</p>
+        </div>
     </div>
 </template>
 
@@ -85,7 +88,7 @@ const loadFolders = async (reload = false) => {
 
 onMounted(async () => {
     await loadFolders();
-});
+}); 
 
 watch(
     () => props.reloadKey,
@@ -99,5 +102,14 @@ watch(
 .folder-card {
     transition: transform 0.2s;
     padding: 20px;
+}
+.folder-card h2 {
+    white-space: normal;
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 </style>

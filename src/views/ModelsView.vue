@@ -1,23 +1,58 @@
 <template>
-    <div class="max-w-7xl mx-auto mt-4">
-        <el-form label-position="top" class="document-form">
-            <el-form-item label="Choisissez un motif" required>
+    <div class="max-w-7xl mx-auto mt-4 px-4 sm:px-6 lg:px-8">
+        <div class="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Les éléments de formulaire s'aligneront en une seule colonne sur les petits écrans et en deux colonnes sur les écrans moyens et grands -->
+            <el-form-item label="Choisissez un motif" label-position="top" required class="m-0">
                 <el-select v-model="selectedPurpose" placeholder="Sélectionnez un contexte" @change="loadTemplate"
-                    size="large">
+                    size="large" class="w-full">
                     <el-option v-for="(purpose, index) in purposes" :key="index" :label="purpose.label"
                         :value="purpose.value" />
                 </el-select>
             </el-form-item>
 
-            <div v-if="documentContent" class="editable-document" ref="documentArea">
+            <el-form-item label="Format de téléchargement" label-position="top" required class="m-0">
+                <el-select v-model="selectedFormat" placeholder="Format de téléchargement" size="large"
+                    prefix-icon="custom-prefix-icon" class="w-full">
+                    <template #prefix>
+                        <img v-if="selectedFormat === 'PDF'" src="../assets/DocumentsIcons/pdf.png" alt="PDF"
+                            class="h-6 w-6 mr-2">
+                        <img v-else-if="selectedFormat === 'word'" src="../assets/DocumentsIcons/doc.png" alt="Word"
+                            class="h-6 w-6 mr-2">
+                    </template>
+                    <el-option value="PDF">
+                        <template #default>
+                            <div class="flex items-center">
+                                <img src="../assets/DocumentsIcons/pdf.png" alt="PDF" class="h-6 w-6 mr-2">
+                                PDF
+                            </div>
+                        </template>
+                    </el-option>
+                    <el-option value="word">
+                        <template #default>
+                            <div class="flex items-center">
+                                <img src="../assets/DocumentsIcons/doc.png" alt="Word" class="h-6 w-6 mr-2">
+                                Word
+                            </div>
+                        </template>
+                    </el-option>
+                </el-select>
+            </el-form-item>
+        </div>
+
+        <el-form label-position="top" class="document-form" v-if="documentContent">
+            <div class="editable-document" ref="documentArea">
                 <div v-html="formattedDocumentContent" />
             </div>
 
             <el-form-item class="py-3">
-                <el-button type="primary" @click="generatePDF">Télécharger le document</el-button>
+                <el-button type="primary" @click="downloadDocument" class="w-full sm:w-auto">Télécharger le document</el-button>
             </el-form-item>
-
         </el-form>
+        <div v-else class="document-form text-center py-10 bg-gray-100 rounded-lg">
+            <p class="text-sm text-gray-600">
+                Veuillez choisir un motif pour générer votre document.
+            </p>
+        </div>
     </div>
 </template>
 
@@ -27,6 +62,9 @@ import { ElSelect, ElOption, ElForm, ElFormItem, ElButton } from 'element-plus';
 import html2pdf from 'html2pdf.js';
 import { useRequestReasons } from '@/stores/requestReasonsStore';
 import { useCompanyStore } from '@/stores/companyStore';
+import { saveAs } from 'file-saver'; // Assurez-vous d'avoir installé file-saver
+
+const selectedFormat = ref('PDF'); // Par défaut, on choisit Word
 
 const logo = computed(() => companyStore.companyInfo?.fields.logo || '@/assets/logo.png');
 const signature = computed(() => companyStore.companyInfo?.fields.signature || '@/assets/signature.png');
@@ -156,6 +194,19 @@ watch(
     { immediate: true }
 );
 
+const downloadDocument = () => {
+    if (selectedFormat.value === 'pdf') {
+        generatePDF(); // Utilise la fonction existante pour générer un PDF
+    } else if (selectedFormat.value === 'word') {
+        generateWordDocument();
+    }
+};
+
+const generateWordDocument = () => {
+    const content = document.querySelector('.editable-document').innerHTML;
+    const blob = new Blob([content], { type: 'application/msword' });
+    saveAs(blob, `${documentTitle.value}.doc`);
+};
 
 // Format the document content to allow for editable fields dynamically
 const formattedDocumentContent = computed(() => {

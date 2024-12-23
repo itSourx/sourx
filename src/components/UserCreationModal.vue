@@ -77,7 +77,6 @@ const formRules = reactive({
     address: [{ required: true, message: 'Veuillez entrer une adresse', trigger: 'blur' }],
     phoneNumber: [{ required: true, message: 'Veuillez entrer le numéro de téléphone', trigger: 'blur' }],
     role: [{ required: true, message: 'Veuillez sélectionner un rôle', trigger: 'change' }],
-    team: [{ required: true, message: 'Veuillez sélectionner au moins une équipe', trigger: 'change' }],
 });
 
 const close = () => {

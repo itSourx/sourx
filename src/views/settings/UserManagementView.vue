@@ -19,7 +19,13 @@
                 </template>
             </el-table-column>
             <el-table-column prop="email" label="Email" />
-            <el-table-column prop="role" label="Rôle" />
+            <el-table-column prop="role" label="Rôle" sortable>
+                <template #default="scope">
+                    <el-tag :type="getRoleColor(scope.row.role)" effect="dark">
+                        {{ scope.row.role }}
+                    </el-tag>
+                </template>
+            </el-table-column>
             <el-table-column prop="createdAt" label="Date de Création" sortable>
                 <template #default="scope">
                     <div class="flex items-center">
@@ -117,11 +123,28 @@ const openUserCreationModal = () => {
     showCreationModal.value = true;
 };
 
-const addUser = (newUser) => {
-    usersList.value.push(newUser);
-    showCreationModal.value = false;
-    console.log(`User ${newUser.firstName} ${newUser.lastName} created`);
+const addUser = async (newUser) => {
+    const loadingInstance = ElLoading.service({
+        text: 'Ajout de l\'utilisateur en cours...',
+    });
+
+    try {
+        await userStore.fetchUsers();
+        usersList.value = userStore.users.map(user => ({
+            ...user,
+            isLoading: false,
+        }));
+
+        showCreationModal.value = false;
+        ElMessage.success('Utilisateur ajouté avec succès');
+    } catch (error) {
+        console.error("Erreur lors de l'ajout de l'utilisateur:", error);
+        ElMessage.error('Erreur lors de l\'ajout de l\'utilisateur');
+    } finally {
+        loadingInstance.close(); // Ferme l'indicateur de chargement
+    }
 };
+
 
 const handleUserUpdated = (updatedUser) => {
     const index = usersList.value.findIndex(user => user.id === updatedUser.id);
@@ -143,6 +166,19 @@ function formatDate(date) {
     };
     return new Date(date).toLocaleDateString('fr-FR', options).replace(',', ' à');
 }
+
+const getRoleColor = (role) => {
+    switch (role) {
+        case 'Employee':
+            return 'success';
+        case 'Manager':
+            return 'warning';
+        case 'Director':
+            return 'danger';
+        default:
+            return 'info'; // Couleur par défaut si le rôle n'est pas reconnu
+    }
+};
 
 function isActive(status) {
     return status === 'active';

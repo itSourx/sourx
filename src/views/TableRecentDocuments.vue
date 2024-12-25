@@ -119,7 +119,36 @@ const currentPage = ref(1);
 const pageSize = ref(10);
 const totalDocuments = ref(1);
 
+const props = defineProps({
+  reloadDocuments: {
+    type: Number,
+    required: true
+  }
+});
+
+const loadDocuments = async () => {
+  console.log("---000--")
+
+  loading.value = true;
+  console.log("---0--")
+  documentList.value = [];
+  await documentStore.getAllDocuments(currentPage.value, true);
+  console.log(documentStore.documents)
+  documentList.value = documentStore.documents;
+  console.log("---1---")
+  console.log(documentList.value)
+  totalDocuments.value = documentStore.totalDocuments;
+  loading.value = false;
+};
+
+watch(() => props.reloadDocuments, async () => {
+  await loadDocuments();
+});
+
+
 const sortedTableData = computed(() => {
+  console.log("---2---")
+  console.log(documentList.value)
   return documentList.value.slice().sort((a, b) => {
     return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
   });

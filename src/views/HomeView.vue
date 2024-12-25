@@ -12,7 +12,7 @@
     </div>
 
     <DocumentUploader v-if="showUploadDocument" @documentUploaded="documentUploaded" />
-    <TableRecentDocuments :key="reloadDocuments" @row-clicked="openFileDetails" />
+    <TableRecentDocuments :reloadDocuments="reloadDocuments" @row-clicked="openFileDetails" />
 
     <div class="flex justify-between items-center my-8">
       <h3 class="text-2xl font-bold">Mes dossiers récents</h3>

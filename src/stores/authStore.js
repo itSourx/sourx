@@ -93,9 +93,7 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = null
     localStorage.removeItem('user')
     localStorage.removeItem('expiration')
-    nextTick(() => {
-      router.replace('/auth/login')
-    })
+    router.replace('/auth/login')
   }
 
   const isAuthenticated = computed(() => !!token.value)

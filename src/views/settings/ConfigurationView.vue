@@ -131,7 +131,7 @@ const handleLogoUpload = async (file) => {
     const formData = new FormData();
     formData.append('file', file.raw || file);
     try {
-        console.log(formData)
+        // console.log(formData)
         await companyStore.uploadFile(formData, 'logo');
         ElMessage.success('Logo mis à jour avec succès');
     } catch (error) {

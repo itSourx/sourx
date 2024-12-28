@@ -86,12 +86,17 @@ const router = createRouter({
       meta: { requiresAuth: true, requiresRole: 'Director' },
     },
     {
+      path: '/settings/support',
+      name: 'support',
+      component: () => import('@/views/settings/SupportView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
       path: '/myprofil',
       name: 'profile',
       component: () => import('@/views/ProfilView.vue'),
       meta: { requiresAuth: true },
     },
-
     {
       path: '/folder/:id',
       name: 'folder',

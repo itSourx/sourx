@@ -57,8 +57,7 @@ const router = createRouter({
     {
       path: '/models',
       name: 'models',
-      component: () =>
-        defineAsyncComponent(() => import('@/views/ModelsView.vue')),
+      component: () => import('@/views/ModelsView.vue'),
       meta: { requiresAuth: true, requiresRole: ['Director', 'Manager'] },
     },
     {

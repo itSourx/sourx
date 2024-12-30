@@ -14,15 +14,15 @@
                 <el-select v-model="selectedFormat" placeholder="Format de téléchargement" size="large"
                     prefix-icon="custom-prefix-icon" class="w-full">
                     <template #prefix>
-                        <img v-if="selectedFormat === 'PDF'" src="../assets/DocumentsIcons/pdf.png" alt="PDF"
+                        <img v-if="selectedFormat === 'PDF'" src="@/assets/DocumentsIcons/pdf.png" alt="PDF"
                             class="h-6 w-6 mr-2">
-                        <img v-else-if="selectedFormat === 'word'" src="../assets/DocumentsIcons/doc.png" alt="Word"
+                        <img v-else-if="selectedFormat === 'word'" src="@/assets/DocumentsIcons/doc.png" alt="Word"
                             class="h-6 w-6 mr-2">
                     </template>
                     <el-option value="PDF">
                         <template #default>
                             <div class="flex items-center">
-                                <img src="../assets/DocumentsIcons/pdf.png" alt="PDF" class="h-6 w-6 mr-2">
+                                <img src="@/assets/DocumentsIcons/pdf.png" alt="PDF" class="h-6 w-6 mr-2">
                                 PDF
                             </div>
                         </template>
@@ -30,7 +30,7 @@
                     <el-option value="word">
                         <template #default>
                             <div class="flex items-center">
-                                <img src="../assets/DocumentsIcons/doc.png" alt="Word" class="h-6 w-6 mr-2">
+                                <img src="@/assets/DocumentsIcons/doc.png" alt="Word" class="h-6 w-6 mr-2">
                                 Word
                             </div>
                         </template>

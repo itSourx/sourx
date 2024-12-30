@@ -31,8 +31,8 @@
 
                 <!-- ProgressBar pour l'espace utilisé -->
                 <div v-if="key === 'usedSpace'" class="mt-4">
-                    <el-progress :percentage="usedSpacePercentage" status="success" />
-                    <a href="/space" class="text-blue-500 text-sm mt-2 block">Gérer l'espace</a>
+                    <el-progress :percentage="parseFloat(usedSpacePercentage)" status="success" />
+                    <a target=”_blank” href="https://console.cloud.google.com/welcome/new?authuser=1&hl=en&invt=Ablizg&project=sourxdocs" class="text-blue-500 text-sm mt-2 block">Gérer l'espace</a>
                 </div>
             </div>
         </div>
@@ -94,7 +94,7 @@ onMounted(async () => {
 const usedSpacePercentage = computed(() => {
     const totalSpace = 2048; // en Ko
     const usedSpace = statistics.value.usedSpace || 0;
-    return (usedSpace / totalSpace) * 100;
+    return ((usedSpace / totalSpace) * 100).toFixed(2);
 });
 </script>
 

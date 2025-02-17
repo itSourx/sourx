@@ -23,10 +23,12 @@ export const useRequestReasons = defineStore('requestReasons', () => {
         .map(reason => ({
           reason_title: reason.fields.name,
           request_reason_id: reason.fields.request_reason_id,
+          section: reason.fields.section,
           createdTime: reason.createdTime,
           id: reason.id,
           pdf_model: reason.fields.pdf_model,
           status: reason.fields.status === 'active',
+          encryptedCode: reason.fields.encryptedCode
         }))
         .sort((a, b) => a.reason_title.localeCompare(b.reason_title))
     } catch (err) {

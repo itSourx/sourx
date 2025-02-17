@@ -1,12 +1,12 @@
 <template>
     <div class="user-management-table w-full overflow-x-auto my-3 max-w-7xl mx-auto mt-4">
         <!-- Button to create a new user -->
-        <div class="flex justify-between items-center mb-4">
+        <div class="flex flex-wrap justify-between items-center mb-4 space-y-3 sm:space-y-0">
             <el-button type="primary" size="large" @click="openUserCreationModal">
-                Créer un Nouveau Utilisateur
+                Nouvel utilisateur
             </el-button>
             <el-input v-model="search" size="large" placeholder="Rechercher par nom ou email" clearable
-                :prefix-icon="Search" class="w-1/2" />
+                :prefix-icon="Search" class="w-full sm:w-1/2 lg:w-1/3" />
         </div>
 
         <!-- Table for users -->

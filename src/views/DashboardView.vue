@@ -6,7 +6,7 @@
                 <h1 class="text-xl font-semibold">Bienvenue, {{ userStore.user.first_name }} 👋</h1>
                 <p class="text-sm text-blue-700">Nous sommes ravis de vous revoir aujourd'hui !</p>
             </div>
-            <div class="text-gray-500 text-sm">Dernière connexion : {{ userStore.user.last_login }}</div>
+            <!-- <div class="text-gray-500 text-sm">Dernière connexion : {{ userStore.user.last_login }}</div> -->
         </div>
 
         <!-- Cartes statistiques -->
@@ -14,7 +14,6 @@
             <div v-for="(value, key) in statistics" :key="key" :class="cardClasses[key]?.background"
                 @click="navigateTo(cardClasses[key]?.route)"
                 class="shadow-lg rounded-lg p-6 cursor-pointer hover:shadow-xl transform hover:scale-105 transition">
-
                 <!-- Icône et contenu -->
                 <div class="flex items-center justify-start">
                     <!-- Icône dans un cercle coloré -->
@@ -25,14 +24,16 @@
                     <!-- Titre et valeur -->
                     <div class="ml-4 flex flex-col justify-end">
                         <div class="text-sm text-gray-500">{{ cardClasses[key]?.label }}</div>
-                        <div :class="cardClasses[key]?.color" class="text-3xl font-semibold mt-2">{{ value }}</div>
+                        <div :class="cardClasses[key]?.color" class="text-3xl font-semibold mt-2">
+                            {{ key === 'usedSpace' ? formatUsedSpace(value) : value }}
+                        </div>
                     </div>
                 </div>
 
                 <!-- ProgressBar pour l'espace utilisé -->
                 <div v-if="key === 'usedSpace'" class="mt-4">
-                    <el-progress :percentage="parseFloat(usedSpacePercentage)" status="success" />
-                    <a target=”_blank” href="https://console.cloud.google.com/welcome/new?authuser=1&hl=en&invt=Ablizg&project=sourxdocs" class="text-blue-500 text-sm mt-2 block">Gérer l'espace</a>
+                    <el-progress :percentage="usedSpacePercentage" status="success" />
+                    <a target="_blank" class="text-blue-500 text-sm mt-2 block">Gérer l'espace</a>
                 </div>
             </div>
         </div>
@@ -44,7 +45,7 @@ import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStatisticsStore } from '@/stores/statisticsStore';
 import { useAuthStore } from '@/stores/authStore';
-import { ElLoading, ElIcon, ElProgress } from 'element-plus';
+import { ElLoading, ElProgress } from 'element-plus';
 import { Folder, Document, User, Tickets, CircleCheck, DataAnalysis, Search } from '@element-plus/icons-vue';
 
 // Store pour les statistiques
@@ -63,8 +64,8 @@ const cardClasses = {
     requestsReasons: { label: 'Motifs de demandes', color: 'text-yellow-500', background: 'bg-white', route: '/settings/request-reasons', icon: Search },
     teams: { label: 'Équipe', color: 'text-indigo-500', background: 'bg-white', route: '/settings/team-management', icon: Tickets },
     requestsCount: { label: 'Demandes à valider', color: 'text-red-500', background: 'bg-white', route: '/requests', icon: CircleCheck },
-    usedSpace: { label: 'Espace utilisé en Ko', color: 'text-purple-500', background: 'bg-white', route: '/space', icon: DataAnalysis },
-    foldersCount: { label: 'Dossiers', color: 'text-orange-500', background: 'bg-white', route: '/dashboard', icon: Folder },
+    usedSpace: { label: 'Espace utilisé en Ko', color: 'text-purple-500', background: 'bg-white', route: 'https://console.cloud.google.com/welcome/new?authuser=1&hl=en&invt=Ablizg&project=sourxdocs', icon: DataAnalysis },
+    foldersCount: { label: 'Dossiers', color: 'text-orange-500', background: 'bg-white', route: '/documents', icon: Folder },
 };
 
 // Fonction pour naviguer vers une page
@@ -81,7 +82,6 @@ onMounted(async () => {
     try {
         await statisticsStore.fetchStatistics();
         statistics.value = statisticsStore.statistics;
-        console.log(statisticsStore.statistics);
     } catch (error) {
         console.error('Erreur lors du chargement des statistiques:', error);
     } finally {
@@ -96,9 +96,12 @@ const usedSpacePercentage = computed(() => {
     const usedSpace = statistics.value.usedSpace || 0;
     return ((usedSpace / totalSpace) * 100).toFixed(2);
 });
+
+// Fonction pour formater l'espace utilisé
+const formatUsedSpace = (value: number) => {
+    return parseFloat(value.toFixed(2));
+};
 </script>
-
-
 
 <style scoped>
 .card-hover {

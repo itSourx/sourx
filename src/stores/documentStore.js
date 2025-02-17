@@ -42,7 +42,6 @@ export const useDocumentStore = defineStore('document', () => {
           },
         },
       )
-      documents.value.push(response.data.document)
     } catch (error) {
       console.error('Erreur lors de l\'ajout du document:', error)
       throw error

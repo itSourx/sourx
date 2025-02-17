@@ -53,7 +53,7 @@
                 </el-form-item>
 
                 <el-form-item>
-                    <el-button type="primary" @click="submitForm">Soumettre</el-button>
+                    <el-button type="primary" @click="submitForm">Ajouter</el-button>
                 </el-form-item>
 
             </el-form>
@@ -112,12 +112,10 @@ const submitForm = async () => {
         formData.append('files[]', file.raw);
     });
 
-    // console.log(Array.from(formData.entries()));
-
     try {
         await documentStore.createDocument(formData);
         ElMessage.success('Nouveau document ajouté');
-        await documentStore.getAllDocuments(true);
+        /* await documentStore.getAllDocuments(true); */
         selectedFolder.value = '';
         shareOption.value = 'self';
         selectedMember.value = [];
@@ -130,8 +128,6 @@ const submitForm = async () => {
         ElMessage.error("Échec d'ajout du fichier");
     }
 };
-
-
 
 onMounted(async () => {
     userStore.fetchUser()

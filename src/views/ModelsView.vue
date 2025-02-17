@@ -1,7 +1,6 @@
 <template>
     <div class="max-w-7xl mx-auto mt-4 px-4 sm:px-6 lg:px-8">
         <div class="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <!-- Les éléments de formulaire s'aligneront en une seule colonne sur les petits écrans et en deux colonnes sur les écrans moyens et grands -->
             <el-form-item label="Choisissez un motif" label-position="top" required class="m-0">
                 <el-select v-model="selectedPurpose" placeholder="Sélectionnez un contexte" @change="loadTemplate"
                     size="large" class="w-full">
@@ -45,7 +44,8 @@
             </div>
 
             <el-form-item class="py-3">
-                <el-button type="primary" @click="downloadDocument" class="w-full sm:w-auto">Télécharger le document</el-button>
+                <el-button type="primary" @click="downloadDocument" class="w-full sm:w-auto">Télécharger le
+                    document</el-button>
             </el-form-item>
         </el-form>
         <div v-else class="document-form text-center py-10 bg-gray-100 rounded-lg">
@@ -59,13 +59,16 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, computed } from 'vue';
 import { ElSelect, ElOption, ElForm, ElFormItem, ElButton } from 'element-plus';
-import html2pdf from 'html2pdf.js';
+import { jsPDF } from 'jspdf';
 import { useRequestReasons } from '@/stores/requestReasonsStore';
 import { useCompanyStore } from '@/stores/companyStore';
-import { saveAs } from 'file-saver'; // Assurez-vous d'avoir installé file-saver
+import { saveAs } from 'file-saver';
+import { editableFields, updateEditableFields } from '@/config/editableFields';
+import html2canvas from 'html2canvas';
+import { useAuthStore } from '@/stores/authStore'
+import axios from 'axios';
 
-const selectedFormat = ref('PDF'); // Par défaut, on choisit Word
-
+const selectedFormat = ref('PDF');
 const logo = computed(() => companyStore.companyInfo?.fields.logo || '@/assets/logo.png');
 const signature = computed(() => companyStore.companyInfo?.fields.signature || '@/assets/signature.png');
 
@@ -75,105 +78,19 @@ const purposes = ref([]);
 const selectedPurpose = ref('');
 const documentTitle = ref('');
 const documentContent = ref('');
-
-const editableFields = [
-    { id: 'employeeName', defaultText: 'Nom de l\'Employé' },
-    { id: 'recommenderName', defaultText: 'Nom du Recommendeur' },
-    { id: 'companyName', defaultText: companyStore.companyInfo?.fields.name || 'Nom de l\'Entreprise' },
-    { id: 'companyAddress', defaultText: companyStore.companyInfo?.fields.address || 'Adresse de l\'Entreprise' },
-    { id: 'companyPhone', defaultText: companyStore.companyInfo?.fields.phone || 'Numéro de Téléphone' },
-    { id: 'employeePosition', defaultText: 'Poste de l\'Employé' },
-    { id: 'employmentDate', defaultText: 'Date d\'embauche' },
-    { id: 'salaryAmount', defaultText: 'Montant en Euros' },
-    { id: 'internName', defaultText: 'Nom du Stagiaire' },
-    { id: 'internPosition', defaultText: 'Poste du Stagiaire' },
-    { id: 'startDate', defaultText: 'Date de début' },
-    { id: 'endDate', defaultText: 'Date de fin' },
-    { id: 'function', defaultText: 'Poste occupé' },
-    { id: 'supervisorName', defaultText: 'Nom du Référent' },
-    { id: 'internSkills', defaultText: 'Domaines de Compétences' },
-    { id: 'internDepartment', defaultText: 'Département' },
-    { id: 'companyNameRef', defaultText: companyStore.companyInfo?.fields.name || 'Nom de l\'Entreprise' },
-    { id: 'location', defaultText: companyStore.companyInfo?.fields.address || 'Adresse de l\'Entreprise' },
-    {
-        id: 'issueDate', defaultText: new Date().toLocaleDateString('fr-FR', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-        })
-    },
-    { id: 'signatoryName', defaultText: (JSON.parse(localStorage.getItem("user"))).last_name + ' ' + (JSON.parse(localStorage.getItem("user"))).first_name },
-    { id: 'leaveReason', defaultText: 'Raison du Congé' },
-    { id: 'contractType', defaultText: 'Type de Contrat' },
-    { id: 'contractStartDate', defaultText: 'Date de début' },
-    { id: 'contractEndDate', defaultText: 'Date de fin' },
-    { id: 'evaluationYear', defaultText: new Date().getFullYear() },
-    { id: 'goal1', defaultText: 'Premier objectif' },
-    { id: 'goal2', defaultText: 'Deuxième objectif' },
-    { id: 'goal3', defaultText: 'Troisième objectif' },
-    { id: 'result1', defaultText: 'Premier résultat' },
-    { id: 'result2', defaultText: 'Deuxième résultat' },
-    { id: 'result3', defaultText: 'Troisième résultat' },
-    { id: 'strengths', defaultText: 'Points forts de l\'employé' },
-    { id: 'improvements', defaultText: 'Améliorations nécessaires' },
-    { id: 'futureGoal1', defaultText: 'Premier objectif futur' },
-    { id: 'futureGoal2', defaultText: 'Deuxième objectif futur' },
-    { id: 'futureGoal3', defaultText: 'Troisième objectif futur' },
-    { id: 'representativeName', defaultText: 'Nom du Représentant' },
-    { id: 'representativePosition', defaultText: 'Poste du Représentant' },
-    { id: 'terminationDate', defaultText: 'Date de Rupture' },
-    { id: 'warningReason', defaultText: 'Raison de l\'Avertissement' },
-    { id: 'overtimeHours', defaultText: 'Nombre d\'heures supplémentaires' },
-    { id: 'overtimePeriodStart', defaultText: 'Date de début des heures supplémentaires' },
-    { id: 'overtimePeriodEnd', defaultText: 'Date de fin des heures supplémentaires' },
-    { id: 'terminationReason', defaultText: 'Raison du licenciement' },
-    { id: 'noticePeriod', defaultText: 'Durée du préavis' },
-    { id: 'settlementAmount', defaultText: 'Montant du solde de tout compte' },
-    { id: 'seniorityDuration', defaultText: 'Durée de l\'ancienneté' },
-    { id: 'departureLocation', defaultText: 'Lieu de départ' },
-    { id: 'arrivalLocation', defaultText: 'Lieu d\'arrivée' },
-    { id: 'tripPurpose', defaultText: 'Objet du déplacement' },
-    { id: 'departureDate', defaultText: 'Date de départ' },
-    { id: 'returnDate', defaultText: 'Date de retour' },
-    { id: 'trainingTitle', defaultText: 'Titre de la Formation' },
-    { id: 'trainingStartDate', defaultText: 'Date de début' },
-    { id: 'trainingEndDate', defaultText: 'Date de fin' },
-    { id: 'approverName', defaultText: 'Nom du Responsable' },
-    { id: 'approverPosition', defaultText: 'Fonction du Responsable' },
-    { id: 'leaveType', defaultText: 'Type de congé (Maladie, Maternité, Paternité, Annuel, Sans solde)' },
-    { id: 'leaveReason', defaultText: 'Motif du congé' },
-    { id: 'authorizingPerson', defaultText: 'Nom du Responsable' },
-    { id: 'authorizingPosition', defaultText: 'Fonction du Responsable' },
-    { id: 'absenceStartDate', defaultText: 'Date de début de l\'absence' },
-    { id: 'absenceEndDate', defaultText: 'Date de fin de l\'absence' },
-];
-
-
-const updateEditableFields = () => {
-    editableFields.forEach(field => {
-        if (field.id === 'companyName') field.defaultText = companyStore.companyInfo?.fields.name || 'Nom de l\'Entreprise';
-        if (field.id === 'companyAddress') field.defaultText = companyStore.companyInfo?.fields.address || 'Adresse de l\'Entreprise';
-        if (field.id === 'companyPhone') field.defaultText = companyStore.companyInfo?.fields.telephone || 'Numéro de Téléphone';
-        if (field.id === 'companyNameRef') field.defaultText = companyStore.companyInfo?.fields.name || 'Nom de l\'Entreprise';
-        if (field.id === 'location') field.defaultText = companyStore.companyInfo?.fields.address || 'Adresse de l\'Entreprise';
-    });
-};
+const userStore = useAuthStore()
 
 onMounted(async () => {
     await companyStore.fetchCompanyInfo();
     await store.fetchRequestReasons();
-    console.log(companyStore.companyInfo)
-
     purposes.value = store.requestReasons.map(reason => ({
         label: reason.pdf_model ? reason.reason_title : 'Sans modèle',
         value: reason.request_reason_id
     }));
-
 });
 
 watch(selectedPurpose, (newPurpose) => {
     const selectedReason = store.requestReasons.find(reason => reason.request_reason_id === newPurpose);
-
     if (selectedReason) {
         documentTitle.value = selectedReason.pdf_model ? selectedReason.reason_title : 'Document sans titre';
         documentContent.value = selectedReason.pdf_model ? selectedReason.pdf_model : '';
@@ -181,7 +98,6 @@ watch(selectedPurpose, (newPurpose) => {
         documentTitle.value = '';
         documentContent.value = '';
     }
-
 });
 
 watch(
@@ -195,8 +111,8 @@ watch(
 );
 
 const downloadDocument = () => {
-    if (selectedFormat.value === 'pdf') {
-        generatePDF(); // Utilise la fonction existante pour générer un PDF
+    if (selectedFormat.value === 'PDF') {
+        generatePDF();
     } else if (selectedFormat.value === 'word') {
         generateWordDocument();
     }
@@ -208,10 +124,8 @@ const generateWordDocument = () => {
     saveAs(blob, `${documentTitle.value}.doc`);
 };
 
-// Format the document content to allow for editable fields dynamically
 const formattedDocumentContent = computed(() => {
     let formattedContent = documentContent.value;
-
     formattedContent = formattedContent.replace(/<img src=".*?" class="logo"/g, `<img src="${logo.value}" class="logo"`);
     formattedContent = formattedContent.replace(/<img src=".*?" class="signature"/g, `<img src="${signature.value}" class="signature"`);
 
@@ -223,40 +137,73 @@ const formattedDocumentContent = computed(() => {
 
     return formattedContent;
 });
-
-// Function to generate PDF
-const generatePDF = () => {
+const generatePDF = async () => {
     const element = document.querySelector('.editable-document');
-    const options = {
-        margin: 1,
-        filename: `${documentTitle.value}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: {
-            scale: 2,
-            useCORS: true,
-            allowTaint: false
-        },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-    };
-    html2pdf().from(element).set(options).save();
+    if (!element) {
+        console.error('Element to convert to PDF not found.');
+        return;
+    }
+
+    // Récupérer les informations dynamiques
+    const employeeName = document.getElementById('employeeName')?.innerText || 'Nom de l\'Employé';
+    const authorName = document.getElementById('signatoryName')?.innerText || 'Nom du Signataire';
+    const dateTime = new Date().toLocaleString('fr-FR');
+    const watermarkData = `Employee: ${employeeName}, Author: ${authorName}, DateTime: ${dateTime}`;
+
+    const canvas = await html2canvas(element, { scale: 2 });
+    const imgData = canvas.toDataURL('image/jpeg', 0.98);
+
+    // Envoyer les données à crypter au backend
+    let encryptedWatermark = watermarkData; // Par défaut, si l'encryption échoue
+    try {
+        const response = await axios.post(
+            '/metadata/encrypt', // Assurez-vous que le chemin est correct selon votre route
+            { metadata: watermarkData },
+            {
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${userStore.token}` // Assurez-vous d'avoir le token d'authentification
+                }
+            }
+        );
+        alert('d')
+        console.log(response.data)
+        if (response.data && response.data.encrypted_metadata) {
+            encryptedWatermark = response.data.encrypted_metadata;
+        }
+    } catch (error) {
+        console.error('Erreur lors du cryptage des métadonnées:', error);
+    }
+
+    const pdf = new jsPDF({
+        unit: 'mm',
+        format: 'a4',
+        orientation: 'portrait'
+    });
+
+    pdf.setProperties({
+        title: documentTitle.value,
+        author: authorName,
+        creator: 'SOURX LTD',
+        keywords: encryptedWatermark,
+    });
+
+    // Ajouter l'image du document
+    const imgWidth = 190; // Largeur en mm (A4 - marges)
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    pdf.addImage(imgData, 'JPEG', 10, 10, imgWidth, imgHeight);
+    pdf.setFontSize(40);
+    pdf.setTextColor(200, 200, 200); // Gris clair
+    pdf.text('', 105, 148, { angle: -45, align: 'center' }); // Filigrane visible au centre
+    pdf.save(`${documentTitle.value}.pdf`);
+};
+
+// Fonction pour vérifier les métadonnées (exemple simplifié)
+const verifyPDFMetadata = (pdfFile: File) => {
+    // Pour une vérification réelle, vous devez utiliser une bibliothèque côté serveur
+    // comme pdf-lib ou une API pour lire les métadonnées
+    console.log('Vérification des métadonnées : Simulation uniquement');
+    console.log('Ouvrir le PDF dans un éditeur de métadonnées pour vérifier les données suivantes :');
+    console.log(`Employee: [nom], Author: [nom], DateTime: [date et heure]`);
 };
 </script>
-
-<style scoped>
-.document-form {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.editable-document {
-    padding: 10px;
-    min-height: 200px;
-}
-
-.editable {
-    font-size: 0.9em;
-    padding: 0 3px;
-}
-</style>

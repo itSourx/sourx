@@ -2,7 +2,7 @@
     <el-dialog title="Modifier l'Équipe" v-model="visible" width="500px" @close="closeModal">
         <el-form :model="teamData" :rules="rules" ref="teamForm" label-width="120px">
             <!-- Nom de l'équipe -->
-            <el-form-item label="Nom de l'équipe" prop="name">
+            <el-form-item label="Nom" prop="name">
                 <el-input v-model="teamData.name" placeholder="Entrez le nom de l'équipe"></el-input>
             </el-form-item>
 
@@ -35,6 +35,7 @@ import { ref, onMounted, watch } from 'vue'
 import { useTeamStore } from '@/stores/teamStore'
 import { useAuthStore } from '@/stores/authStore'
 import { ElMessage } from 'element-plus'
+import { nextTick } from 'vue'
 
 interface Team {
     id: string
@@ -76,25 +77,27 @@ const userList = ref([])
 const teamForm = ref(null)
 
 onMounted(async () => {
-
-    await userStore.fetchUsers()
+    if (!userStore.users.length) {
+        await userStore.fetchUsers()
+    }
     userList.value = userStore.users.filter(user => user.role === 'Employee')
     managerList.value = userStore.users.filter(user => user.role === 'Manager')
 
-    populateTeamData()
+    if (props.teamToEdit) {
+        populateTeamData()
+    }
 })
 
 // Remplir les données de l'équipe
 function populateTeamData() {
     if (props.teamToEdit) {
-        teamData.value = {
+        Object.assign(teamData.value, {
             id: props.teamToEdit.id,
             name: props.teamToEdit.fields.name,
-            manager: Array.isArray(props.teamToEdit.fields.manager)
-                ? props.teamToEdit.fields.manager[0]
-                : props.teamToEdit.fields.manager,
-            members: props.teamToEdit.fields.users || [],
-        }
+            manager: props.teamToEdit.fields.manager?.[0] ?? null,
+            members: props.teamToEdit.fields.users ?? [],
+        })
+
     }
 }
 
@@ -123,11 +126,12 @@ function resetForm() {
     teamData.value = { id: 0, name: '', manager: null, members: [] }
 }
 
-watch(() => props.teamToEdit, (newTeam) => {
+watch(() => props.teamToEdit, async (newTeam) => {
     if (newTeam) {
-        populateTeamData();
+        await nextTick()
+        populateTeamData()
     }
-});
+})
 
 </script>
 

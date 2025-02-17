@@ -5,7 +5,6 @@
 <script setup>
 import { computed } from 'vue';
 
-// Props pour passer le nom du fichier
 const props = defineProps(['fileName']);
 
 const getFileExtension = (fileName) => {
@@ -15,7 +14,6 @@ const getFileExtension = (fileName) => {
     return parts.length > 1 ? parts.pop().toLowerCase() : 'default';
 };
 
-// Computed property pour déterminer l'icône basée sur l'extension de fichier
 const iconSrc = computed(() => {
     const ext = getFileExtension(props.fileName);
 
@@ -35,6 +33,39 @@ const iconSrc = computed(() => {
             return new URL('@/assets/DocumentsIcons/pdf.png', import.meta.url).href;
         case 'folder':
             return new URL('@/assets/DocumentsIcons/folder.png', import.meta.url).href;
+        case 'py':
+        case 'js':
+        case 'html':
+        case 'css':
+        case 'json':
+        case 'ts':
+        case 'java':
+        case 'cpp':
+        case 'c':
+        case 'php':
+        case 'rb':
+        case 'cs':
+        case 'go':
+        case 'sh':
+        case 'md':
+            return new URL('@/assets/DocumentsIcons/code.png', import.meta.url).href;
+        case 'csv':
+            return new URL('@/assets/DocumentsIcons/csv.png', import.meta.url).href;
+        case 'zip':
+        case 'rar':
+        case '7z':
+            return new URL('@/assets/DocumentsIcons/zip.png', import.meta.url).href;
+        case 'odt':
+            return new URL('@/assets/DocumentsIcons/odt.png', import.meta.url).href;
+        case 'svg':
+            return new URL('@/assets/DocumentsIcons/svg.png', import.meta.url).href;
+        case 'jpg':
+        case 'jpeg':
+        case 'png':
+        case 'gif':
+        case 'bmp':
+        case 'tiff':
+            return new URL('@/assets/DocumentsIcons/photo.png', import.meta.url).href;
         default:
             return new URL('@/assets/DocumentsIcons/default.png', import.meta.url).href;
     }

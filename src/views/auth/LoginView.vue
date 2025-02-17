@@ -10,13 +10,18 @@
                 { required: true, message: 'Veuillez entrer votre adresse e-mail', trigger: 'blur' },
                 { type: 'email', message: 'Veuillez entrer une adresse e-mail valide', trigger: ['blur'] },
             ]">
+                <template #label>
+                    <span style="font-weight: bold;">Email</span>
+                </template>
                 <el-input :size="size" v-model="loginForm.email" placeholder="Entrez votre email" :autocomplete="'on'"
                     prefix-icon="Message" :input-style="{ fontWeight: 'bold' }" />
             </el-form-item>
-
             <el-form-item label="Mot de passe" :label-position="labelPosition" prop="password" :rules="[
                 { required: true, message: 'Veuillez entrer votre mot de passe', trigger: 'blur' },
             ]">
+                <template #label>
+                    <span style="font-weight: bold;">Mot de passe</span>
+                </template>
                 <el-input :size="size" v-model="loginForm.password" type="password"
                     placeholder="Entrez votre mot de passe" show-password suffix-icon="el-icon-view"
                     prefix-icon="Unlock" />

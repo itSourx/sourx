@@ -1,12 +1,27 @@
 <template>
   <div class="recent-documents-table w-full overflow-x-auto my-3" v-loading="loading">
+
     <!-- Barre de recherche -->
-    <div class="mb-4">
+    <div class="mb-4 flex flex-col md:flex-row justify-between items-center">
       <el-input v-model="search" size="large" placeholder="Rechercher par nom de document" clearable
-        :prefix-icon="Search" class="w-full" />
+        :prefix-icon="Search" class="w-full md:w-1/4 mb-4 md:mb-0 md:mr-4" />
+      <div class="flex flex-col md:flex-row items-center w-full md:w-auto">
+        <el-select v-model="fileTypeFilter" placeholder="Filtrer par type de fichier"
+          class="w-full md:w-auto mb-4 md:mb-0 md:mr-4" size="large" clearable>
+          <el-option v-for="option in fileTypeOptions" :key="option.value" :label="option.label" :value="option.value">
+            <div class="flex items-center">
+              <img :src="getFileTypeIcon(option.value)" alt="" class="w-6 h-6 mr-2">
+              <span>{{ option.label }}</span>
+            </div>
+          </el-option>
+        </el-select>
+        <el-date-picker v-model="dateRange" size="large" type="daterange" range-separator="à"
+          start-placeholder="Date de début" end-placeholder="Date de fin" class="w-full md:w-auto" clearable />
+      </div>
     </div>
 
-    <el-table :data="paginatedTableData" style="width: 100%" empty-text="Pas de documents" @row-click="onRowClicked">
+
+    <el-table :data="paginatedTableData" style="width: 100%" empty-text="Pas de documents">
 
       <el-table-column label="Nom" sortable>
         <template #default="scope">
@@ -31,7 +46,8 @@
           <UserAvatar
             :userName="`${scope.row['first_name (from uploaded_by)']} ${scope.row['last_name (from uploaded_by)']}`"
             class="mx-1" />
-          {{ `${scope.row['first_name (from uploaded_by)']} ${scope.row['last_name (from uploaded_by)']}` }}
+            <small>{{ `${scope.row['first_name (from uploaded_by)']} ${scope.row['last_name (from uploaded_by)']}` }}</small>
+          
         </template>
       </el-table-column>
 
@@ -58,8 +74,9 @@
             <UserAvatar
               :userName="`${scope.row['first_name (from user_receiver)'][0]} ${scope.row['last_name (from user_receiver)'][0]}`"
               class="mx-1" />
-            {{ `${scope.row['first_name (from user_receiver)'][0]} ${scope.row['last_name (from user_receiver)'][0]}` }}
-
+              <small>{{ `${scope.row['first_name (from user_receiver)'][0]} ${scope.row['last_name (from user_receiver)'][0]}` }}
+              </small>
+            
             <!-- Si plus d'un receiver, affichez "..." avec Popover pour afficher les autres -->
             <el-popover v-if="scope.row['first_name (from user_receiver)']?.length > 1" placement="top" width="200"
               trigger="hover">
@@ -68,7 +85,7 @@
                   <UserAvatar
                     :userName="`${scope.row['first_name (from user_receiver)'][0]} ${scope.row['last_name (from user_receiver)'][0]}`"
                     class="mx-1" />
-                  {{ `${firstName} ${scope.row['last_name (from user_receiver)'][index + 1]}` }}
+                  <small>{{ `${firstName} ${scope.row['last_name (from user_receiver)'][index + 1]}` }}</small>
                 </li>
               </ul>
               <template #reference>
@@ -78,30 +95,27 @@
           </template>
           <!-- Affichez un message ou un espace vide si aucun nom n'est disponible -->
           <template v-else>
-            <span>Supérieur hiérarchique</span>
+            <span></span>
           </template>
         </template>
       </el-table-column>
 
-      <el-table-column label="" width="70">
+      <el-table-column label="" width="130">
         <template #default="scope">
-          <el-button type="danger" @click="confirmRemoveFile(scope.row.id)">
-            <el-icon>
-              <Delete />
-            </el-icon>
-          </el-button>
+          <el-button type="primary" icon="View" @click="emit('row-clicked', scope.row)"></el-button>
+          <el-button type="danger" icon="Delete" @click="confirmRemoveFile(scope.row.id)"></el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <div v-if="totalDocuments.value > 0" class="w-full flex justify-end mt-4">
-  <el-pagination :total="totalDocuments.value" :page-size="pageSize.value" v-model:current-page="currentPage.value"
-    @current-change="handlePageChange" layout="total, prev, pager, next" />
-</div>
+    <div v-if="totalDocuments > 0" class="w-full flex justify-end mt-4">
+      <el-pagination :total="totalDocuments" :page-size="pageSize" v-model:current-page="currentPage"
+        @current-change="handlePageChange" layout="total, prev, pager, next" />
+    </div>
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 import { ref, computed, onMounted, watch } from 'vue';
 import DocumentIcon from '@/components/DocumentIcon.vue';
 import UserAvatar from '@/components/UserAvatar.vue';
@@ -114,6 +128,8 @@ const emit = defineEmits(['row-clicked']);
 const documentStore = useDocumentStore();
 const documentList = ref([]);
 const search = ref('');
+const fileTypeFilter = ref('');
+const dateRange = ref([]);
 const loading = ref(false)
 const currentPage = ref(1);
 const pageSize = ref(10);
@@ -126,37 +142,52 @@ const props = defineProps({
   }
 });
 
-const loadDocuments = async () => {
-  console.log("---000--")
+const fileTypeOptions = [
+  { value: 'code', label: 'Code', extensions: ['py', 'js', 'html', 'css', 'json', 'ts', 'java', 'cpp', 'c', 'php', 'rb', 'cs', 'go', 'sh', 'md'], icon: new URL('@/assets/DocumentsIcons/code.png', import.meta.url).href }
+];
 
+
+const getFileTypeIcon = (fileType) => {
+  const option = fileTypeOptions.find(option => option.value === fileType);
+  return option ? option.icon : '';
+};
+
+/* const loadDocuments = async () => {
   loading.value = true;
-  console.log("---0--")
   documentList.value = [];
   await documentStore.getAllDocuments(currentPage.value, true);
-  console.log(documentStore.documents)
-  documentList.value = documentStore.documents;
-  console.log("---1---")
   console.log(documentList.value)
   totalDocuments.value = documentStore.totalDocuments;
   loading.value = false;
-};
+}; */
 
 watch(() => props.reloadDocuments, async () => {
-  await loadDocuments();
+  loading.value = true
+  await documentStore.getAllDocuments(currentPage.value);
+  loading.value = false
+  console.log(documentStore)
+  documentList.value = documentStore.documents;
+  totalDocuments.value = documentStore.totalDocuments
+  console.log(totalDocuments.value)
+
 });
 
 
 const sortedTableData = computed(() => {
-  console.log("---2---")
-  console.log(documentList.value)
   return documentList.value.slice().sort((a, b) => {
     return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
   });
 });
 
 const filteredTableData = computed(() => {
+  console.log("-----------")
+  console.log(sortedTableData)
+  console.log("-----------")
+
   return sortedTableData.value.filter((document) =>
-    document.name.toLowerCase().includes(search.value.toLowerCase())
+    document.name.toLowerCase().includes(search.value.toLowerCase()) &&
+    (fileTypeFilter.value ? fileTypeOptions.find(option => option.value === fileTypeFilter.value)?.extensions.includes(document.name.split('.').pop()?.toLowerCase()) : true) &&
+    (dateRange.value.length ? new Date(document.created_at) >= dateRange.value[0] && new Date(document.created_at) <= dateRange.value[1] : true)
   );
 });
 
@@ -168,7 +199,7 @@ const paginatedTableData = computed(() => {
 });
 
 // Fonction pour récupérer les documents de la page actuelle
-const handlePageChange = async (page: number) => {
+const handlePageChange = async (page) => {
   documentList.value = []
   currentPage.value = page;
   loading.value = true;
@@ -225,18 +256,10 @@ onMounted(async () => {
   console.log(documentStore.documents);
 });
 
-function onRowClicked(document) {
-  emit('row-clicked', document);
-}
+
 
 watch(documentList, (newDocuments) => {
   console.log('Documents mis à jour:', newDocuments);
 });
 </script>
 
-<style scoped>
-.flex {
-  display: flex;
-  align-items: center;
-}
-</style>

@@ -1,27 +1,27 @@
 <template>
     <el-dialog title="Détails de l'Utilisateur" v-model="visible" :show-close="false" align-center>
-        <el-form :model="editableUser" ref="formRef">
-            <el-form-item label="Prénom" prop="first_name" label-position="top">
+        <el-form :model="editableUser" ref="formRef" label-position="top">
+            <el-form-item label="Prénom" prop="first_name">
                 <el-input v-model="editableUser.first_name" size="large" />
             </el-form-item>
 
-            <el-form-item label="Nom" prop="lastName" label-position="top">
+            <el-form-item label="Nom" prop="lastName">
                 <el-input v-model="editableUser.last_name" size="large" />
             </el-form-item>
 
-            <el-form-item label="Email" prop="email" label-position="top">
+            <el-form-item label="Email" prop="email">
                 <el-input v-model="editableUser.email" size="large" disabled />
             </el-form-item>
 
-            <el-form-item label="Adresse" prop="address" label-position="top">
+            <el-form-item label="Adresse" prop="address">
                 <el-input v-model="editableUser.address" size="large" />
             </el-form-item>
 
-            <el-form-item label="Numéro de Téléphone" prop="phoneNumber" label-position="top">
+            <el-form-item label="Numéro de Téléphone" prop="phoneNumber">
                 <vue-tel-input v-model="editableUser.phone_number" class="w-full"></vue-tel-input>
             </el-form-item>
 
-            <el-form-item label="Rôle" prop="role" label-position="top">
+            <el-form-item label="Rôle" prop="role">
                 <el-select v-model="editableUser.role" placeholder="Choisissez un rôle" size="large">
                     <el-option label="Employé" value="Employé" />
                     <el-option label="Manager" value="Manager" />
@@ -85,3 +85,36 @@ onMounted(() => {
     console.log(props.user)
 })
 </script>
+
+<style scoped>
+.el-dialog {
+    width: 90%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.el-form-item {
+    margin-bottom: 20px;
+}
+
+.el-input, .el-select {
+    width: 100%;
+}
+
+@media (max-width: 600px) {
+    .el-dialog {
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+    }
+
+    .el-dialog__header, .el-dialog__body, .el-dialog__footer {
+        padding: 10px;
+    }
+
+    .el-form-item {
+        margin-bottom: 15px;
+    }
+}
+</style>
+

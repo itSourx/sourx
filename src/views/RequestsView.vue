@@ -24,9 +24,10 @@
                 </el-form-item>
 
                 <el-form-item label="Description">
-                    <el-input v-model="description" type="textarea" placeholder="Décrivez la demande ici" />
+                    <el-input v-model="description" type="textarea"
+                        placeholder="Décrivez la demande ici (max 200 caractères)" maxlength="200" show-word-limit
+                        @input="handleDescriptionInput" />
                 </el-form-item>
-
                 <el-form-item label="Fichiers justificatifs" prop="uploadedFiles">
                     <el-upload v-model:file-list="fileList" class="upload-demo w-full" drag :auto-upload="false"
                         limit="5" action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" multiple
@@ -71,6 +72,7 @@ const requestStore = useRequestStore()
 const authStore = useAuthStore();
 
 const loading = ref(false)
+const maxDescriptionLength = 200;
 const requestReasons = ref([])
 const toggleDemandArea = ref(false);
 const selectedReason = ref(null);
@@ -83,10 +85,11 @@ const reloadTable = () => {
     tableKey.value += 1; // Incrémente la clé pour forcer le rechargement
 };
 
-/* const rules = {
-    selectedReason: [{ required: true, message: 'Veuillez sélectionner un motif', trigger: 'change' }],
+const handleDescriptionInput = () => {
+    if (description.value.length > maxDescriptionLength) {
+        description.value = description.value.substring(0, maxDescriptionLength);
+    }
 };
- */
 
 const toggleNewDemandArea = () => {
     toggleDemandArea.value = !toggleDemandArea.value;

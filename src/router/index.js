@@ -108,14 +108,12 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.path.startsWith('/folder/')) {
-    const isPageReload = sessionStorage.getItem('pageReloaded')
-
-    if (isPageReload) {
-      sessionStorage.removeItem('pageReloaded') // Supprimer le flag
-      next({ name: 'documents' })
+    if (sessionStorage.getItem('pageReloaded')) {
+      sessionStorage.removeItem('pageReloaded')
+      next() // Permet de continuer la navigation sans redirection forcée
     } else {
       sessionStorage.setItem('pageReloaded', 'true')
-      next() // Permet l'accès à la page /folder/:id
+      next() // Permet l'accès à la page
     }
     return
   }

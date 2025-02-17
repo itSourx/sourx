@@ -2,7 +2,7 @@
     <div class="requests-table w-full overflow-x-auto my-5">
         <!-- Barre de recherche -->
         <div class="mb-4">
-            <el-input v-model="search" size="large" placeholder="Rechercher par motif ou description" clearable
+            <el-input v-model="search" size="large" placeholder="Rechercher" clearable
                 :prefix-icon="Search" class="w-full" />
         </div>
 

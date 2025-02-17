@@ -1,5 +1,5 @@
 <template>
-    <el-avatar>{{ initials }}</el-avatar>
+    <el-avatar><small>{{ initials }}</small></el-avatar>
 </template>
 
 <script setup>

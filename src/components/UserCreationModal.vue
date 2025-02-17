@@ -23,7 +23,7 @@
 
             <el-form-item label="Rôle" prop="role" label-position="top">
                 <el-select v-model="newUser.role" placeholder="Choisissez un rôle" size="large">
-                    <el-option label="Employé" value="Employé" />
+                    <el-option label="Employé" value="Employee" />
                     <el-option label="Manager" value="Manager" />
                     <el-option label="Directeur" value="Director" />
                 </el-select>
@@ -90,7 +90,6 @@ const handleSubmit = () => {
         if (valid) {
             try {
                 await userStore.createUser(newUser.value);
-                ElMessage.success('Nouveau Utilisateur ajouté');
                 emit('user-created', newUser.value);
                 close();
             } catch (error) {

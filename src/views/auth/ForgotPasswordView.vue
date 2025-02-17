@@ -1,13 +1,12 @@
 <template>
     <div class="forgot-password" v-loading="loading">
         <h1 class="text-2xl font-bold mb-4">Mot de passe oublié ?</h1>
-        <p class="text-gray-600 mb-6">Veuillez entrer votre adresse e-mail pour recevoir un code de réinitialisation de
-            mot de passe.</p>
+        <p class="text-gray-600 mb-6">Veuillez entrer votre adresse e-mail pour recevoir un code de réinitialisation de mot de passe.</p>
 
         <el-steps :active="activeStep" style="max-width: 600px" align-center>
-            <el-step title="Saisir l'email" description="Entrer votre email" />
-            <el-step title="Vérifier le code" description="Entrer le code reçu" />
-            <el-step title="Nouveau mot de passe" />
+            <el-step title="Saisir l'email" description="" />
+            <el-step title="Vérifier le code" description="" />
+            <el-step title="Mot de passe" />
         </el-steps>
 
         <div class="step-content">
@@ -81,7 +80,28 @@ const passwordFormRef = ref<FormInstance>()
 
 const passwordRules = reactive<FormRules>({
     password: [
-        { required: true, message: 'Veuillez entrer votre mot de passe', trigger: 'blur' }
+        { required: true, message: 'Veuillez entrer votre mot de passe', trigger: 'blur' },
+        { min: 6, message: 'Le mot de passe doit contenir au moins 6 caractères', trigger: 'blur' },
+        {
+            pattern: /[A-Z]/,
+            message: 'Le mot de passe doit contenir au moins une majuscule',
+            trigger: 'blur'
+        },
+        {
+            pattern: /[a-z]/,
+            message: 'Le mot de passe doit contenir au moins une minuscule',
+            trigger: 'blur'
+        },
+        {
+            pattern: /[0-9]/,
+            message: 'Le mot de passe doit contenir au moins un chiffre',
+            trigger: 'blur'
+        },
+        {
+            pattern: /[!@#$%^&*(),.?":{}|<>]/,
+            message: 'Le mot de passe doit contenir au moins un caractère spécial',
+            trigger: 'blur'
+        }
     ],
     confirmPassword: [
         { required: true, message: 'Veuillez confirmer votre mot de passe', trigger: 'blur' },

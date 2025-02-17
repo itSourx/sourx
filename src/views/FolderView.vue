@@ -57,7 +57,7 @@
             <el-table-column label="Envoyé par" sortable>
                 <template #default="scope">
                     <UserAvatar :userName="scope.row.uploaded_by" class="mx-1" />
-                    {{ scope.row.uploaded_by }}
+                    <small>{{ scope.row.uploaded_by }}</small>
                 </template>
             </el-table-column>
 

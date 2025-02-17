@@ -10,17 +10,26 @@
             <el-table-column label="Manager" v-slot="scope">
                 <span>{{ scope.row.fields['first_name (from manager)'][0] }}</span>
             </el-table-column>
-            <el-table-column label="Nombre de Membres">
+            <el-table-column label="Nb membres">
                 <template #default="scope">
                     <span>{{ scope.row.fields.users ? scope.row.fields.users.length : 0 }}</span>
                 </template>
             </el-table-column>
+            <el-table-column label="Statut">
+                <template #default="scope">
+                    <div class="flex items-center space-x-2">
+                        <el-switch :model-value="scope.row.fields.status === 'active'"
+                            @change="toggleActive(scope.row.id, scope.row.fields.status)" active-color="#13ce66"
+                            inactive-color="#ff4949" />
+                        <span
+                            :class="{ 'text-green-600 font-semibold': scope.row.fields.status === 'active', 'text-red-500 font-semibold': scope.row.fields.status !== 'active' }">
+                            {{ scope.row.fields.status === 'active' ? 'Activée' : 'Désactivée' }}
+                        </span>
+                    </div>
+                </template>
+            </el-table-column>
             <el-table-column label="Actions">
                 <template #default="scope">
-                    <el-switch :model-value="scope.row.fields.status === 'active'"
-                        @change="toggleActive(scope.row.id, scope.row.fields.status)" active-color="#13ce66"
-                        inactive-color="#ff4949"></el-switch>
-                    {{ scope.row.fields.status }}
                     <el-button @click="openTeamEditModal(scope.row)" size="large">
                         <el-icon>
                             <Edit />
@@ -55,8 +64,8 @@ const openTeamCreationModal = () => {
     showCreationModal.value = true
 }
 
-const openTeamEditModal = team => {
-    selectedTeam.value = team
+const openTeamEditModal = (team) => {
+    selectedTeam.value = { ...team } // Cloner l'objet pour éviter des mutations lentes
     showEditModal.value = true
 }
 

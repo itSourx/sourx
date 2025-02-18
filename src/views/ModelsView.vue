@@ -166,8 +166,6 @@ const generatePDF = async () => {
                 }
             }
         );
-        alert('d')
-        console.log(response.data)
         if (response.data && response.data.encrypted_metadata) {
             encryptedWatermark = response.data.encrypted_metadata;
         }
@@ -198,12 +196,4 @@ const generatePDF = async () => {
     pdf.save(`${documentTitle.value}.pdf`);
 };
 
-// Fonction pour vérifier les métadonnées (exemple simplifié)
-const verifyPDFMetadata = (pdfFile: File) => {
-    // Pour une vérification réelle, vous devez utiliser une bibliothèque côté serveur
-    // comme pdf-lib ou une API pour lire les métadonnées
-    console.log('Vérification des métadonnées : Simulation uniquement');
-    console.log('Ouvrir le PDF dans un éditeur de métadonnées pour vérifier les données suivantes :');
-    console.log(`Employee: [nom], Author: [nom], DateTime: [date et heure]`);
-};
 </script>
